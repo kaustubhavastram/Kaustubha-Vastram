@@ -9,9 +9,9 @@ const emptyProduct = {
   price: "",
   category: "midi",
   tag: "",
-  image_url: "",
   alt: "",
   available: true,
+  description: "",
 };
 
 export default function ProductForm() {
@@ -20,8 +20,10 @@ export default function ProductForm() {
   const isEditing = Boolean(id) && id !== "new";
 
   const [form, setForm] = useState(emptyProduct);
+  const [images, setImages] = useState([]); // {id?, image_url, is_hero, file?, _localPreview?}
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -45,10 +47,31 @@ export default function ProductForm() {
         price: data.price?.toString() || "",
         category: data.category || "midi",
         tag: data.tag || "",
-        image_url: data.image_url || "",
         alt: data.alt || "",
         available: data.available ?? true,
+        description: data.description || "",
       });
+
+      const { data: imgs, error: imgErr } = await supabase
+        .from("product_images")
+        .select("*")
+        .eq("product_id", id)
+        .order("sort_order", { ascending: true });
+
+      if (!imgErr && imgs) {
+        if (imgs.length > 0) {
+          setImages(
+            imgs.map((img) => ({
+              id: img.id,
+              image_url: img.image_url,
+              is_hero: img.is_hero,
+            })),
+          );
+        } else if (data.image_url) {
+          // Legacy product with only a single image_url, no rows yet
+          setImages([{ image_url: data.image_url, is_hero: true }]);
+        }
+      }
     } catch (err) {
       setError("Product not found.");
     } finally {
@@ -64,19 +87,84 @@ export default function ProductForm() {
     }));
   }
 
+  async function handleFileSelect(e) {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    setError("");
+
+    try {
+      const uploaded = [];
+      for (const file of files) {
+        const ext = file.name.split(".").pop();
+        const fileName = `${crypto.randomUUID()}.${ext}`;
+        const path = `${fileName}`;
+
+        const { error: uploadErr } = await supabase.storage
+          .from("product-images")
+          .upload(path, file, { cacheControl: "3600", upsert: false });
+
+        if (uploadErr) throw uploadErr;
+
+        const { data: publicData } = supabase.storage
+          .from("product-images")
+          .getPublicUrl(path);
+
+        uploaded.push({
+          image_url: publicData.publicUrl,
+          is_hero: false,
+        });
+      }
+
+      setImages((prev) => {
+        const combined = [...prev, ...uploaded];
+        // If nothing is marked hero yet, mark the first uploaded as hero
+        if (!combined.some((img) => img.is_hero) && combined.length > 0) {
+          combined[0] = { ...combined[0], is_hero: true };
+        }
+        return combined;
+      });
+    } catch (err) {
+      setError(err.message || "Image upload failed.");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  }
+
+  function setHero(index) {
+    setImages((prev) =>
+      prev.map((img, i) => ({ ...img, is_hero: i === index })),
+    );
+  }
+
+  function removeImage(index) {
+    setImages((prev) => {
+      const updated = prev.filter((_, i) => i !== index);
+      if (updated.length > 0 && !updated.some((img) => img.is_hero)) {
+        updated[0] = { ...updated[0], is_hero: true };
+      }
+      return updated;
+    });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setSaving(true);
+
+    const heroImage = images.find((img) => img.is_hero) || images[0];
 
     const payload = {
       name: form.name.trim(),
       price: parseFloat(form.price),
       category: form.category,
       tag: form.tag.trim() || null,
-      image_url: form.image_url.trim(),
+      image_url: heroImage ? heroImage.image_url : "",
       alt: form.alt.trim() || form.name.trim(),
       available: form.available,
+      description: form.description.trim(),
     };
 
     if (!payload.name || isNaN(payload.price) || payload.price <= 0) {
@@ -85,7 +173,15 @@ export default function ProductForm() {
       return;
     }
 
+    if (images.length === 0) {
+      setError("Please upload at least one product image.");
+      setSaving(false);
+      return;
+    }
+
     try {
+      let productId = id;
+
       if (isEditing) {
         const { error } = await supabase
           .from("products")
@@ -93,9 +189,32 @@ export default function ProductForm() {
           .eq("id", id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("products").insert(payload);
+        const { data: inserted, error } = await supabase
+          .from("products")
+          .insert(payload)
+          .select()
+          .single();
         if (error) throw error;
+        productId = inserted.id;
       }
+
+      // Replace product_images rows for this product
+      await supabase
+        .from("product_images")
+        .delete()
+        .eq("product_id", productId);
+
+      const imageRows = images.map((img, idx) => ({
+        product_id: productId,
+        image_url: img.image_url,
+        is_hero: img.is_hero,
+        sort_order: idx,
+      }));
+
+      const { error: imgErr } = await supabase
+        .from("product_images")
+        .insert(imageRows);
+      if (imgErr) throw imgErr;
 
       navigate("/admin/products");
     } catch (err) {
@@ -190,19 +309,6 @@ export default function ProductForm() {
           </div>
 
           <div className="admin__form-group admin__form-group--full">
-            <label htmlFor="image_url">Image URL *</label>
-            <input
-              id="image_url"
-              name="image_url"
-              type="url"
-              value={form.image_url}
-              onChange={handleChange}
-              placeholder="https://images.unsplash.com/..."
-              required
-            />
-          </div>
-
-          <div className="admin__form-group admin__form-group--full">
             <label htmlFor="alt">Alt Text</label>
             <input
               id="alt"
@@ -211,6 +317,18 @@ export default function ProductForm() {
               value={form.alt}
               onChange={handleChange}
               placeholder="Description of the image"
+            />
+          </div>
+
+          <div className="admin__form-group admin__form-group--full">
+            <label htmlFor="description">Product Description</label>
+            <textarea
+              id="description"
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              placeholder="Fabric, fit, care instructions, styling notes…"
+              rows="4"
             />
           </div>
 
@@ -227,19 +345,63 @@ export default function ProductForm() {
           </div>
         </div>
 
-        {form.image_url && (
-          <div className="admin__form-preview">
-            <h4>Image Preview</h4>
-            <img
-              src={form.image_url}
-              alt="Preview"
-              className="admin__form-preview-img"
-              onError={(e) => {
-                e.target.style.display = "none";
-              }}
+        {/* ---------- Image upload ---------- */}
+        <div className="admin__form-preview">
+          <h4>Product Images</h4>
+          <p className="admin__image-help">
+            Upload one or more images from your device. Click an image to set it
+            as the hero image shown on the homepage.
+          </p>
+
+          <label className="admin__upload-btn">
+            {uploading ? "Uploading…" : "+ Upload Images"}
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFileSelect}
+              disabled={uploading}
+              style={{ display: "none" }}
             />
-          </div>
-        )}
+          </label>
+
+          {images.length > 0 && (
+            <div className="admin__image-grid">
+              {images.map((img, idx) => (
+                <div
+                  key={img.id || img.image_url + idx}
+                  className={`admin__image-item${img.is_hero ? " admin__image-item--hero" : ""}`}
+                >
+                  <img
+                    src={img.image_url}
+                    alt={`Product image ${idx + 1}`}
+                    onClick={() => setHero(idx)}
+                  />
+                  {img.is_hero && (
+                    <span className="admin__image-hero-badge">Hero</span>
+                  )}
+                  <button
+                    type="button"
+                    className="admin__image-remove"
+                    onClick={() => removeImage(idx)}
+                    aria-label="Remove image"
+                  >
+                    &times;
+                  </button>
+                  {!img.is_hero && (
+                    <button
+                      type="button"
+                      className="admin__image-sethero"
+                      onClick={() => setHero(idx)}
+                    >
+                      Set as hero
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="admin__form-actions">
           <button
@@ -249,7 +411,11 @@ export default function ProductForm() {
           >
             Cancel
           </button>
-          <button type="submit" className="btn btn--dark" disabled={saving}>
+          <button
+            type="submit"
+            className="btn btn--dark"
+            disabled={saving || uploading}
+          >
             {saving
               ? "Saving…"
               : isEditing

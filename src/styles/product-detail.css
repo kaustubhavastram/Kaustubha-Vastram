@@ -1,0 +1,210 @@
+/* ============ Product Detail Page ============ */
+
+.product-detail-page {
+  min-height: 70vh;
+  padding: 3rem 0 6rem;
+  background: var(--cream);
+}
+
+.product-detail__empty {
+  text-align: center;
+  padding: 5rem 0;
+}
+.product-detail__empty h2 {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.product-detail__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.product-detail__main-image {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--cream-2);
+  box-shadow: var(--shadow);
+}
+.product-detail__main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-detail__thumbs {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.product-detail__thumb {
+  width: 72px;
+  height: 90px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: var(--cream-2);
+  padding: 0;
+  transition: border-color 0.25s;
+}
+.product-detail__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.product-detail__thumb.active {
+  border-color: var(--accent);
+}
+
+.product-detail__info {
+  padding-top: 0.5rem;
+}
+
+.product-detail__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 500;
+  margin: 0.4rem 0 0.8rem;
+}
+
+.product-detail__price {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: var(--accent-dark);
+  margin-bottom: 1.5rem;
+}
+
+.product-detail__description {
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  max-width: 48ch;
+  white-space: pre-wrap;
+}
+
+.product-detail__add {
+  max-width: 320px;
+}
+
+@media (max-width: 900px) {
+  .product-detail__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* ============ Admin Image Upload ============ */
+
+.admin__image-help {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 1rem;
+}
+
+.admin__upload-btn {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+  background: transparent;
+  color: var(--ink);
+}
+.admin__upload-btn:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.admin__image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.admin__image-item {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--cream-2);
+  border: 2px solid transparent;
+}
+.admin__image-item--hero {
+  border-color: var(--accent);
+}
+.admin__image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.admin__image-hero-badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: var(--accent);
+  color: white;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.admin__image-remove {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(43, 37, 32, 0.65);
+  color: white;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.admin__image-remove:hover {
+  background: #b3422f;
+}
+
+.admin__image-sethero {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem;
+  background: rgba(250, 246, 240, 0.92);
+  color: var(--ink);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.admin__image-item:hover .admin__image-sethero {
+  opacity: 1;
+}
