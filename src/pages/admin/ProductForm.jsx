@@ -12,6 +12,7 @@ const emptyProduct = {
   alt: "",
   available: true,
   description: "",
+  stock_quantity: "",
 };
 
 export default function ProductForm() {
@@ -50,6 +51,7 @@ export default function ProductForm() {
         alt: data.alt || "",
         available: data.available ?? true,
         description: data.description || "",
+        stock_quantity: data.stock_quantity != null ? data.stock_quantity.toString() : "",
       });
 
       const { data: imgs, error: imgErr } = await supabase
@@ -156,6 +158,9 @@ export default function ProductForm() {
 
     const heroImage = images.find((img) => img.is_hero) || images[0];
 
+    const stockVal = form.stock_quantity.trim();
+    const stockQuantity = stockVal === "" ? null : parseInt(stockVal, 10);
+
     const payload = {
       name: form.name.trim(),
       price: parseFloat(form.price),
@@ -165,6 +170,7 @@ export default function ProductForm() {
       alt: form.alt.trim() || form.name.trim(),
       available: form.available,
       description: form.description.trim(),
+      stock_quantity: stockQuantity,
     };
 
     if (!payload.name || isNaN(payload.price) || payload.price <= 0) {
@@ -278,6 +284,23 @@ export default function ProductForm() {
               placeholder="245.00"
               required
             />
+          </div>
+
+          <div className="admin__form-group">
+            <label htmlFor="stock_quantity">Stock Quantity</label>
+            <input
+              id="stock_quantity"
+              name="stock_quantity"
+              type="number"
+              min="0"
+              step="1"
+              value={form.stock_quantity}
+              onChange={handleChange}
+              placeholder="e.g. 25"
+            />
+            <span className="admin__form-help">
+              Leave blank for unlimited stock
+            </span>
           </div>
 
           <div className="admin__form-group">

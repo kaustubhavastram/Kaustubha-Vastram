@@ -657,6 +657,48 @@
   margin-bottom: 1.5rem;
 }
 
+/* ---------- Stock Badges ---------- */
+.stock-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.stock-badge--ok {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.stock-badge--low {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.stock-badge--out {
+  background: #fef2f2;
+  color: #b3422f;
+  font-weight: 600;
+}
+
+.stock-badge--unlimited {
+  background: var(--cream-2);
+  color: var(--ink-soft);
+  font-size: 1rem;
+  padding: 0 0.4rem;
+  letter-spacing: 0;
+}
+
+.admin__form-help {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 0.15rem;
+}
+
 /* ---------- Responsive Admin ---------- */
 @media (max-width: 900px) {
   .admin {

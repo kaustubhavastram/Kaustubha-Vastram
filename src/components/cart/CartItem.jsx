@@ -3,6 +3,9 @@ import { useCart } from '../../context/CartContext';
 export default function CartItem({ item }) {
   const { updateQty, removeItem } = useCart();
 
+  const atMaxStock =
+    item.stock_quantity != null && item.qty >= item.stock_quantity;
+
   return (
     <div className="cart-item" data-id={item.id}>
       <img
@@ -27,10 +30,14 @@ export default function CartItem({ item }) {
           <button
             onClick={() => updateQty(item.id, 1)}
             aria-label="Increase quantity"
+            disabled={atMaxStock}
           >
             +
           </button>
         </div>
+        {atMaxStock && (
+          <div className="cart-item__max-note">Max available</div>
+        )}
       </div>
       <button
         className="cart-item__remove"
@@ -42,3 +49,4 @@ export default function CartItem({ item }) {
     </div>
   );
 }
+

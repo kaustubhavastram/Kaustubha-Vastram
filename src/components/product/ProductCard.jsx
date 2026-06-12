@@ -4,9 +4,20 @@ import { useCart } from "../../context/CartContext";
 export default function ProductCard({ product }) {
   const { addItem } = useCart();
 
+  const isInStock =
+    product.stock_quantity === null || product.stock_quantity === undefined
+      ? true
+      : product.stock_quantity > 0;
+  const effectivelyAvailable = product.available && isInStock;
+  const isLowStock =
+    product.stock_quantity != null &&
+    product.stock_quantity > 0 &&
+    product.stock_quantity <= 4;
+
   function handleAdd(e) {
     e.stopPropagation();
     e.preventDefault();
+    if (!effectivelyAvailable) return;
     addItem(product);
   }
 
@@ -19,17 +30,28 @@ export default function ProductCard({ product }) {
           loading="lazy"
           onError={(e) => e.target.parentElement.classList.add("img-fallback")}
         />
-        {product.tag && <span className="card__tag">{product.tag}</span>}
-        {!product.available && (
-          <span className="card__tag card__tag--sold-out">Sold Out</span>
+        {(product.tag || isLowStock || !effectivelyAvailable) && (
+          <div className="card__tags">
+            {product.tag && effectivelyAvailable && (
+              <span className="card__tag">{product.tag}</span>
+            )}
+            {isLowStock && effectivelyAvailable && (
+              <span className="card__tag card__tag--low-stock">
+                Only {product.stock_quantity} left!
+              </span>
+            )}
+            {!effectivelyAvailable && (
+              <span className="card__tag card__tag--unavailable">Unavailable</span>
+            )}
+          </div>
         )}
         <button
           className="card__add"
           onClick={handleAdd}
-          disabled={!product.available}
+          disabled={!effectivelyAvailable}
           aria-label={`Add ${product.name} to cart`}
         >
-          {product.available ? "Add to Cart" : "Sold Out"}
+          {effectivelyAvailable ? "Add to Cart" : "Unavailable"}
         </button>
       </div>
       <div className="card__name">{product.name}</div>
@@ -42,3 +64,4 @@ export default function ProductCard({ product }) {
     </Link>
   );
 }
+

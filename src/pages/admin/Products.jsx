@@ -2,6 +2,19 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 
+function StockBadge({ quantity }) {
+  if (quantity === null || quantity === undefined) {
+    return <span className="stock-badge stock-badge--unlimited">∞</span>;
+  }
+  if (quantity === 0) {
+    return <span className="stock-badge stock-badge--out">Out of stock</span>;
+  }
+  if (quantity <= 5) {
+    return <span className="stock-badge stock-badge--low">{quantity} left</span>;
+  }
+  return <span className="stock-badge stock-badge--ok">{quantity}</span>;
+}
+
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -84,6 +97,7 @@ export default function Products() {
               <th>Name</th>
               <th>Category</th>
               <th>Price</th>
+              <th>Stock</th>
               <th>Tag</th>
               <th>Available</th>
               <th>Actions</th>
@@ -110,6 +124,9 @@ export default function Products() {
                   </span>
                 </td>
                 <td>₹{parseFloat(product.price).toFixed(2)}</td>
+                <td>
+                  <StockBadge quantity={product.stock_quantity} />
+                </td>
                 <td>{product.tag || '—'}</td>
                 <td>
                   <label className="admin__toggle">

@@ -23,13 +23,18 @@ export function CartProvider({ children }) {
   const addItem = useCallback((product) => {
     setItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
+      const maxStock = product.stock_quantity;
       if (existing) {
+        // Don't exceed stock limit
+        if (maxStock != null && existing.qty >= maxStock) return prev;
         return prev.map((item) =>
           item.id === product.id
             ? { ...item, qty: item.qty + 1 }
             : item
         );
       }
+      // Don't add if stock is 0
+      if (maxStock != null && maxStock <= 0) return prev;
       return [...prev, { ...product, qty: 1 }];
     });
   }, []);
@@ -43,7 +48,11 @@ export function CartProvider({ children }) {
       const updated = prev.map((item) => {
         if (item.id !== id) return item;
         const newQty = item.qty + delta;
-        return newQty <= 0 ? null : { ...item, qty: newQty };
+        if (newQty <= 0) return null;
+        // Don't exceed stock limit
+        const maxStock = item.stock_quantity;
+        if (maxStock != null && newQty > maxStock) return item;
+        return { ...item, qty: newQty };
       }).filter(Boolean);
       return updated;
     });

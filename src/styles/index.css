@@ -361,6 +361,21 @@ img { display: block; max-width: 100%; }
 }
 .card:hover .card__media img { transform: scale(1.05); }
 
+.card__tags {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  z-index: 10;
+}
+
+.card__tags .card__tag {
+  position: static;
+}
+
 .card__tag {
   position: absolute;
   top: 0.9rem; left: 0.9rem;
@@ -375,6 +390,66 @@ img { display: block; max-width: 100%; }
 .card__tag--sold-out {
   background: var(--ink);
   color: var(--cream);
+  text-align:right;
+}
+
+.card__tag--low-stock {
+  background: #fff3e0;
+  color: #e65100;
+  font-weight: 500;
+  animation: pulse-stock 2s ease-in-out infinite;
+}
+
+@keyframes pulse-stock {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+
+.card__tag--unavailable {
+  background: rgba(43, 37, 32, 0.85);
+  color: var(--cream);
+  backdrop-filter: blur(2px);
+}
+
+/* ---------- Stock indicators on detail page ---------- */
+.product-detail__stock-warning {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #e65100;
+  background: #fff3e0;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+  animation: pulse-stock 2s ease-in-out infinite;
+}
+
+.product-detail__stock-warning::before {
+  content: "🔥";
+  font-size: 0.9rem;
+}
+
+.product-detail__unavailable-msg {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: var(--cream-2);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+}
+
+/* ---------- Cart item stock limit ---------- */
+.cart-item__max-note {
+  font-size: 0.68rem;
+  color: #e65100;
+  margin-top: 0.2rem;
+  letter-spacing: 0.04em;
 }
 
 .card__add {

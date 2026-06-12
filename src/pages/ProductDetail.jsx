@@ -54,8 +54,18 @@ export default function ProductDetail() {
     }
   }
 
+  const isInStock =
+    product?.stock_quantity === null || product?.stock_quantity === undefined
+      ? true
+      : product?.stock_quantity > 0;
+  const effectivelyAvailable = product?.available && isInStock;
+  const isLowStock =
+    product?.stock_quantity != null &&
+    product?.stock_quantity > 0 &&
+    product?.stock_quantity <= 4;
+
   function handleAdd() {
-    if (product) addItem(product);
+    if (product && effectivelyAvailable) addItem(product);
   }
 
   if (loading) {
@@ -101,9 +111,9 @@ export default function ProductDetail() {
                   e.target.parentElement.classList.add("img-fallback")
                 }
               />
-              {product.tag && <span className="card__tag">{product.tag}</span>}
-              {!product.available && (
-                <span className="card__tag card__tag--sold-out">Sold Out</span>
+              {product.tag && effectivelyAvailable && <span className="card__tag">{product.tag}</span>}
+              {!effectivelyAvailable && (
+                <span className="card__tag card__tag--unavailable">Unavailable</span>
               )}
             </div>
 
@@ -142,12 +152,24 @@ export default function ProductDetail() {
               </p>
             )}
 
+            {isLowStock && (
+              <div className="product-detail__stock-warning">
+                Only {product.stock_quantity} left in stock!
+              </div>
+            )}
+
+            {!effectivelyAvailable && (
+              <div className="product-detail__unavailable-msg">
+                Currently Unavailable
+              </div>
+            )}
+
             <button
               className="btn btn--dark btn--full product-detail__add"
               onClick={handleAdd}
-              disabled={!product.available}
+              disabled={!effectivelyAvailable}
             >
-              {product.available ? "Add to Cart" : "Sold Out"}
+              {effectivelyAvailable ? "Add to Cart" : "Currently Unavailable"}
             </button>
           </div>
         </div>
