@@ -1,11 +1,19 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
-import { ORDER_STATUSES } from '../../lib/constants';
+import { useState, useEffect } from "react";
+import { supabase } from "../../lib/supabase";
+
+const ORDER_STATUSES = [
+  "pending",
+  "paid",
+  "failed",
+  "shipped",
+  "delivered",
+  "cancelled",
+];
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterStatus, setFilterStatus] = useState("all");
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [orderItems, setOrderItems] = useState({});
 
@@ -17,14 +25,14 @@ export default function Orders() {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('orders')
-        .select('*, profiles(email, full_name)')
-        .order('created_at', { ascending: false });
+        .from("orders")
+        .select("*, profiles(email, full_name)")
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       setOrders(data || []);
     } catch (err) {
-      console.error('Error fetching orders:', err);
+      console.error("Error fetching orders:", err);
     } finally {
       setLoading(false);
     }
@@ -34,9 +42,9 @@ export default function Orders() {
     if (orderItems[orderId]) return; // Already fetched
 
     const { data, error } = await supabase
-      .from('order_items')
-      .select('*, products(name, image_url)')
-      .eq('order_id', orderId);
+      .from("order_items")
+      .select("*, products(name, image_url)")
+      .eq("order_id", orderId);
 
     if (!error) {
       setOrderItems((prev) => ({ ...prev, [orderId]: data }));
@@ -45,13 +53,13 @@ export default function Orders() {
 
   async function updateOrderStatus(orderId, newStatus) {
     const { error } = await supabase
-      .from('orders')
+      .from("orders")
       .update({ status: newStatus })
-      .eq('id', orderId);
+      .eq("id", orderId);
 
     if (!error) {
       setOrders((prev) =>
-        prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
+        prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)),
       );
     }
   }
@@ -67,18 +75,18 @@ export default function Orders() {
 
   function getStatusClass(status) {
     const map = {
-      pending: 'status--pending',
-      paid: 'status--paid',
-      failed: 'status--failed',
-      shipped: 'status--shipped',
-      delivered: 'status--delivered',
-      cancelled: 'status--cancelled',
+      pending: "status--pending",
+      paid: "status--paid",
+      failed: "status--failed",
+      shipped: "status--shipped",
+      delivered: "status--delivered",
+      cancelled: "status--cancelled",
     };
-    return map[status] || '';
+    return map[status] || "";
   }
 
   const filtered =
-    filterStatus === 'all'
+    filterStatus === "all"
       ? orders
       : orders.filter((o) => o.status === filterStatus);
 
@@ -98,8 +106,8 @@ export default function Orders() {
       <div className="admin__toolbar">
         <div className="admin__filters">
           <button
-            className={`admin__filter-btn${filterStatus === 'all' ? ' active' : ''}`}
-            onClick={() => setFilterStatus('all')}
+            className={`admin__filter-btn${filterStatus === "all" ? " active" : ""}`}
+            onClick={() => setFilterStatus("all")}
           >
             All ({orders.length})
           </button>
@@ -108,7 +116,7 @@ export default function Orders() {
             return (
               <button
                 key={s}
-                className={`admin__filter-btn${filterStatus === s ? ' active' : ''}`}
+                className={`admin__filter-btn${filterStatus === s ? " active" : ""}`}
                 onClick={() => setFilterStatus(s)}
               >
                 {s.charAt(0).toUpperCase() + s.slice(1)} ({count})
@@ -138,29 +146,33 @@ export default function Orders() {
               <>
                 <tr
                   key={order.id}
-                  className={`admin__row${expandedOrder === order.id ? ' admin__row--expanded' : ''}`}
+                  className={`admin__row${expandedOrder === order.id ? " admin__row--expanded" : ""}`}
                   onClick={() => toggleExpand(order.id)}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: "pointer" }}
                 >
                   <td className="admin__mono">{order.id.slice(0, 8)}…</td>
-                  <td>{order.profiles?.email || 'N/A'}</td>
+                  <td>{order.profiles?.email || "N/A"}</td>
                   <td>₹{parseFloat(order.total).toFixed(2)}</td>
                   <td>
-                    <span className={`status-badge ${getStatusClass(order.status)}`}>
+                    <span
+                      className={`status-badge ${getStatusClass(order.status)}`}
+                    >
                       {order.status}
                     </span>
                   </td>
                   <td className="admin__mono">
                     {order.razorpay_payment_id
-                      ? order.razorpay_payment_id.slice(0, 12) + '…'
-                      : '—'}
+                      ? order.razorpay_payment_id.slice(0, 12) + "…"
+                      : "—"}
                   </td>
                   <td>{new Date(order.created_at).toLocaleDateString()}</td>
                   <td onClick={(e) => e.stopPropagation()}>
                     <select
                       className="admin__status-select"
                       value={order.status}
-                      onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                      onChange={(e) =>
+                        updateOrderStatus(order.id, e.target.value)
+                      }
                     >
                       {ORDER_STATUSES.map((s) => (
                         <option key={s} value={s}>
@@ -183,11 +195,18 @@ export default function Orders() {
                                   src={item.products?.image_url}
                                   alt={item.products?.name}
                                   className="admin__order-item-img"
-                                  onError={(e) => { e.target.style.display = 'none'; }}
+                                  onError={(e) => {
+                                    e.target.style.display = "none";
+                                  }}
                                 />
-                                <span>{item.products?.name || 'Unknown'}</span>
+                                <span>{item.products?.name || "Unknown"}</span>
                                 <span>×{item.quantity}</span>
-                                <span>₹{parseFloat(item.price_at_purchase).toFixed(2)}</span>
+                                <span>
+                                  ₹
+                                  {parseFloat(item.price_at_purchase).toFixed(
+                                    2,
+                                  )}
+                                </span>
                               </div>
                             ))}
                           </div>

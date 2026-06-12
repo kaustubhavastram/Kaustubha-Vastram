@@ -1,4 +1,4 @@
-import { CATEGORIES } from '../../lib/constants';
+const CATEGORIES = ["all", "saree", "kurtha", "lehenga"];
 
 export default function Filters({ activeFilter, onFilterChange }) {
   return (
@@ -6,7 +6,7 @@ export default function Filters({ activeFilter, onFilterChange }) {
       {CATEGORIES.map((cat) => (
         <button
           key={cat}
-          className={`filter${activeFilter === cat ? ' active' : ''}`}
+          className={`filter${activeFilter === cat ? " active" : ""}`}
           onClick={() => onFilterChange(cat)}
         >
           {cat.charAt(0).toUpperCase() + cat.slice(1)}

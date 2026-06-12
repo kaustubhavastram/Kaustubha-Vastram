@@ -1,27 +1,28 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
-import { CATEGORIES } from '../../lib/constants';
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { supabase } from "../../lib/supabase";
+
+const CATEGORIES = ["all", "saree", "kurtha", "lehenga"];
 
 const emptyProduct = {
-  name: '',
-  price: '',
-  category: 'midi',
-  tag: '',
-  image_url: '',
-  alt: '',
+  name: "",
+  price: "",
+  category: "midi",
+  tag: "",
+  image_url: "",
+  alt: "",
   available: true,
 };
 
 export default function ProductForm() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const isEditing = Boolean(id) && id !== 'new';
+  const isEditing = Boolean(id) && id !== "new";
 
   const [form, setForm] = useState(emptyProduct);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (isEditing) {
@@ -33,23 +34,23 @@ export default function ProductForm() {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', id)
+        .from("products")
+        .select("*")
+        .eq("id", id)
         .single();
 
       if (error) throw error;
       setForm({
-        name: data.name || '',
-        price: data.price?.toString() || '',
-        category: data.category || 'midi',
-        tag: data.tag || '',
-        image_url: data.image_url || '',
-        alt: data.alt || '',
+        name: data.name || "",
+        price: data.price?.toString() || "",
+        category: data.category || "midi",
+        tag: data.tag || "",
+        image_url: data.image_url || "",
+        alt: data.alt || "",
         available: data.available ?? true,
       });
     } catch (err) {
-      setError('Product not found.');
+      setError("Product not found.");
     } finally {
       setLoading(false);
     }
@@ -59,13 +60,13 @@ export default function ProductForm() {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError('');
+    setError("");
     setSaving(true);
 
     const payload = {
@@ -79,7 +80,7 @@ export default function ProductForm() {
     };
 
     if (!payload.name || isNaN(payload.price) || payload.price <= 0) {
-      setError('Please fill in all required fields with valid values.');
+      setError("Please fill in all required fields with valid values.");
       setSaving(false);
       return;
     }
@@ -87,20 +88,18 @@ export default function ProductForm() {
     try {
       if (isEditing) {
         const { error } = await supabase
-          .from('products')
+          .from("products")
           .update(payload)
-          .eq('id', id);
+          .eq("id", id);
         if (error) throw error;
       } else {
-        const { error } = await supabase
-          .from('products')
-          .insert(payload);
+        const { error } = await supabase.from("products").insert(payload);
         if (error) throw error;
       }
 
-      navigate('/admin/products');
+      navigate("/admin/products");
     } catch (err) {
-      setError(err.message || 'Failed to save product.');
+      setError(err.message || "Failed to save product.");
     } finally {
       setSaving(false);
     }
@@ -109,22 +108,22 @@ export default function ProductForm() {
   if (loading) {
     return (
       <div className="admin__content">
-        <h1>{isEditing ? 'Edit Product' : 'Add Product'}</h1>
+        <h1>{isEditing ? "Edit Product" : "Add Product"}</h1>
         <div className="admin__loading">Loading…</div>
       </div>
     );
   }
 
   // Filter out 'all' from categories
-  const productCategories = CATEGORIES.filter((c) => c !== 'all');
+  const productCategories = CATEGORIES.filter((c) => c !== "all");
 
   return (
     <div className="admin__content">
       <div className="admin__page-header">
-        <h1>{isEditing ? 'Edit Product' : 'New Product'}</h1>
+        <h1>{isEditing ? "Edit Product" : "New Product"}</h1>
         <button
           className="btn btn--outline"
-          onClick={() => navigate('/admin/products')}
+          onClick={() => navigate("/admin/products")}
         >
           ← Back to Products
         </button>
@@ -236,7 +235,7 @@ export default function ProductForm() {
               alt="Preview"
               className="admin__form-preview-img"
               onError={(e) => {
-                e.target.style.display = 'none';
+                e.target.style.display = "none";
               }}
             />
           </div>
@@ -246,16 +245,16 @@ export default function ProductForm() {
           <button
             type="button"
             className="btn btn--outline"
-            onClick={() => navigate('/admin/products')}
+            onClick={() => navigate("/admin/products")}
           >
             Cancel
           </button>
-          <button
-            type="submit"
-            className="btn btn--dark"
-            disabled={saving}
-          >
-            {saving ? 'Saving…' : isEditing ? 'Update Product' : 'Create Product'}
+          <button type="submit" className="btn btn--dark" disabled={saving}>
+            {saving
+              ? "Saving…"
+              : isEditing
+                ? "Update Product"
+                : "Create Product"}
           </button>
         </div>
       </form>

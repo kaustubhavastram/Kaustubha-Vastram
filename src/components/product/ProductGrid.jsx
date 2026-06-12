@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
-import { DEFAULT_PRODUCTS } from '../../lib/constants';
-import ProductCard from './ProductCard';
-import Filters from './Filters';
+import { useState, useEffect } from "react";
+import { supabase } from "../../lib/supabase";
+import ProductCard from "./ProductCard";
+import Filters from "./Filters";
 
 export default function ProductGrid() {
   const [products, setProducts] = useState([]);
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState("all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,28 +16,28 @@ export default function ProductGrid() {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: true });
+        .from("products")
+        .select("*")
+        .order("created_at", { ascending: true });
 
       if (error) throw error;
 
       if (data && data.length > 0) {
         setProducts(data);
       } else {
-        // Fallback to default products when Supabase is not configured
-        setProducts(DEFAULT_PRODUCTS);
+        // No products available yet
+        setProducts([]);
       }
     } catch (err) {
-      console.warn('Using fallback products:', err.message);
-      setProducts(DEFAULT_PRODUCTS);
+      console.warn("Error fetching products:", err.message);
+      setProducts([]);
     } finally {
       setLoading(false);
     }
   }
 
   const filtered =
-    activeFilter === 'all'
+    activeFilter === "all"
       ? products
       : products.filter((p) => p.category === activeFilter);
 
@@ -63,14 +62,16 @@ export default function ProductGrid() {
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <p style={{
-            textAlign: 'center',
-            color: 'var(--ink-soft)',
-            padding: '4rem 0',
-            fontFamily: 'var(--font-serif)',
-            fontSize: '1.15rem',
-            fontStyle: 'italic',
-          }}>
+          <p
+            style={{
+              textAlign: "center",
+              color: "var(--ink-soft)",
+              padding: "4rem 0",
+              fontFamily: "var(--font-serif)",
+              fontSize: "1.15rem",
+              fontStyle: "italic",
+            }}
+          >
             No dresses in this category yet — check back soon.
           </p>
         ) : (
