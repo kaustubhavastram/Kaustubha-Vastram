@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext';
-import AuthModal from '../auth/AuthModal';
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
+import AuthModal from "../auth/AuthModal";
 
 export default function Header() {
   const { cartCount, openCart } = useCart();
@@ -13,7 +13,7 @@ export default function Header() {
   const location = useLocation();
 
   // Don't show main header on admin pages
-  if (location.pathname.startsWith('/admin')) return null;
+  if (location.pathname.startsWith("/admin")) return null;
 
   function handleCartClick() {
     openCart();
@@ -23,12 +23,12 @@ export default function Header() {
 
   function toggleMobile() {
     setMobileMenuOpen(!mobileMenuOpen);
-    document.body.style.overflow = !mobileMenuOpen ? 'hidden' : '';
+    document.body.style.overflow = !mobileMenuOpen ? "hidden" : "";
   }
 
   function closeMobile() {
     setMobileMenuOpen(false);
-    document.body.style.overflow = '';
+    document.body.style.overflow = "";
   }
 
   return (
@@ -40,13 +40,27 @@ export default function Header() {
             onClick={toggleMobile}
             aria-label="Open menu"
           >
-            <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
 
-          <ul className={`nav__links${mobileMenuOpen ? ' open' : ''}`}>
-            <li><a href="#collection" onClick={closeMobile}>Shop</a></li>
-            <li><a href="#story" onClick={closeMobile}>Our Story</a></li>
-            <li><a href="#lookbook" onClick={closeMobile}>Lookbook</a></li>
+          <ul className={`nav__links${mobileMenuOpen ? " open" : ""}`}>
+            <li>
+              <a href="#collection" onClick={closeMobile}>
+                Shop
+              </a>
+            </li>
+            <li>
+              <a href="#story" onClick={closeMobile}>
+                Our Story
+              </a>
+            </li>
+            <li>
+              <a href="#lookbook" onClick={closeMobile}>
+                Lookbook
+              </a>
+            </li>
           </ul>
 
           <Link to="/" className="nav__logo">
@@ -67,7 +81,11 @@ export default function Header() {
                 <button
                   className="nav__action-link"
                   onClick={signOut}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
                 >
                   Sign Out
                 </button>
@@ -76,21 +94,27 @@ export default function Header() {
               <button
                 className="nav__action-link"
                 onClick={() => setAuthModalOpen(true)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                }}
               >
                 Sign In
               </button>
             )}
-            <button
-              className="cart-btn"
-              onClick={handleCartClick}
-              aria-label="Open cart"
-            >
-              Cart{' '}
-              <span className={`cart-count${bump ? ' bump' : ''}`}>
-                {cartCount}
-              </span>
-            </button>
+            {!isAdmin && (
+              <button
+                className="cart-btn"
+                onClick={handleCartClick}
+                aria-label="Open cart"
+              >
+                Cart{" "}
+                <span className={`cart-count${bump ? " bump" : ""}`}>
+                  {cartCount}
+                </span>
+              </button>
+            )}
           </div>
         </nav>
       </header>

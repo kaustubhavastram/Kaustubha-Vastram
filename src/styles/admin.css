@@ -174,7 +174,9 @@
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(43, 37, 32, 0.06);
-  transition: transform 0.25s, box-shadow 0.25s;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
 }
 .stat-card:hover {
   transform: translateY(-2px);
@@ -266,7 +268,7 @@
 }
 
 .admin__mono {
-  font-family: 'SF Mono', 'Consolas', monospace;
+  font-family: "SF Mono", "Consolas", monospace;
   font-size: 0.8rem;
   color: var(--ink-soft);
 }
@@ -376,6 +378,31 @@
   margin-bottom: 0.8rem;
 }
 
+.admin__order-info {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(43, 37, 32, 0.1);
+}
+
+.admin__info-section h4 {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  color: var(--ink);
+}
+
+.admin__info-section p {
+  font-size: 0.88rem;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+}
+
+.admin__info-section strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
 .admin__order-items {
   display: flex;
   flex-direction: column;
@@ -440,7 +467,7 @@
   transition: all 0.3s;
 }
 .admin__toggle-slider::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 2px;
   left: 2px;
@@ -572,7 +599,9 @@
   background: var(--white);
   color: var(--ink);
   outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
 }
 .admin__form-group input:focus,
 .admin__form-group select:focus {
@@ -588,7 +617,7 @@
   cursor: pointer;
   padding-top: 1.2rem;
 }
-.admin__checkbox-label input[type='checkbox'] {
+.admin__checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
   accent-color: var(--accent);
