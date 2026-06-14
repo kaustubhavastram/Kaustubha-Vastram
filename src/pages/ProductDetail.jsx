@@ -152,15 +152,9 @@ export default function ProductDetail() {
               </p>
             )}
 
-            {isLowStock && (
+            {isLowStock && effectivelyAvailable && (
               <div className="product-detail__stock-warning">
                 Only {product.stock_quantity} left in stock!
-              </div>
-            )}
-
-            {!effectivelyAvailable && (
-              <div className="product-detail__unavailable-msg">
-                Currently Unavailable
               </div>
             )}
 

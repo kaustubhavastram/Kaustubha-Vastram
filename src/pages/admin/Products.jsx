@@ -63,6 +63,16 @@ export default function Products() {
     if (!error) {
       setProducts((prev) => prev.filter((p) => p.id !== id));
       setDeleteId(null);
+    } else {
+      console.error('Error deleting product:', error);
+      if (error.code === '23503') {
+        alert(
+          'Cannot delete this product because it has been ordered in the past (order history refers to it).\n\nTo hide it from the store, please toggle off the "Available" switch instead.'
+        );
+      } else {
+        alert('Failed to delete product: ' + error.message);
+      }
+      setDeleteId(null);
     }
   }
 
