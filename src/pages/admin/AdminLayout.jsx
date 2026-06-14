@@ -1,6 +1,9 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import '../../styles/admin.css';
+import dashboard from "../../logo/dashboard.png";
+import orders from "../../logo/clipboard.png";
+import products from "../../logo/woman-clothes.png";
 
 export default function AdminLayout() {
   const { user, signOut } = useAuth();
@@ -29,7 +32,7 @@ export default function AdminLayout() {
               `admin__nav-link${isActive ? ' active' : ''}`
             }
           >
-            <span className="admin__nav-icon">📊</span>
+            <span className="admin__nav-icon"><img src={dashboard} alt="Dashboard"/></span>
             Dashboard
           </NavLink>
           <NavLink
@@ -38,7 +41,7 @@ export default function AdminLayout() {
               `admin__nav-link${isActive ? ' active' : ''}`
             }
           >
-            <span className="admin__nav-icon">📦</span>
+            <span className="admin__nav-icon"><img src={orders} alt="Orders"/></span>
             Orders
           </NavLink>
           <NavLink
@@ -47,7 +50,7 @@ export default function AdminLayout() {
               `admin__nav-link${isActive ? ' active' : ''}`
             }
           >
-            <span className="admin__nav-icon">👗</span>
+            <span className="admin__nav-icon"><img src={products} alt="Products"/></span>
             Products
           </NavLink>
         </nav>
