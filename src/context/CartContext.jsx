@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { useAuth } from './AuthContext';
+import toast from 'react-hot-toast';
 
 const STORAGE_PREFIX = 'kv_cart_';
 
@@ -64,7 +65,6 @@ export function CartProvider({ children }) {
 
   const addItem = useCallback((product) => {
     if (!user) {
-      // Not logged in — show login prompt
       setShowLoginPrompt(true);
       return;
     }
@@ -73,7 +73,6 @@ export function CartProvider({ children }) {
       const existing = prev.find((item) => item.id === product.id);
       const maxStock = product.stock_quantity;
       if (existing) {
-        // Don't exceed stock limit
         if (maxStock != null && existing.qty >= maxStock) return prev;
         return prev.map((item) =>
           item.id === product.id
@@ -81,10 +80,11 @@ export function CartProvider({ children }) {
             : item
         );
       }
-      // Don't add if stock is 0
       if (maxStock != null && maxStock <= 0) return prev;
       return [...prev, { ...product, qty: 1 }];
     });
+
+    toast.success(`${product.name} added to cart`);
   }, [user]);
 
   const removeItem = useCallback((id) => {

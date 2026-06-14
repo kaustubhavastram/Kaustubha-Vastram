@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import Header from "./components/layout/Header";
@@ -54,6 +55,18 @@ export default function App() {
 
           <Footer />
           <Analytics />
+          <Toaster
+            position="bottom-center"
+            toastOptions={{
+              style: {
+                background: '#2b2520',
+                color: '#faf6f1',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+              },
+              duration: 2000,
+            }}
+          />
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>
