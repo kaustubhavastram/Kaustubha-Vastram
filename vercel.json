@@ -1,0 +1,8 @@
+{
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/api/create-order", "destination": "/api/create-order" },
+    { "source": "/api/verify-payment", "destination": "/api/verify-payment" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
