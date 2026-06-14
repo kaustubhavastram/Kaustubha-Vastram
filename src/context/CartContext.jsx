@@ -1,13 +1,22 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
+import { useAuth } from './AuthContext';
 
-const STORAGE_KEY = 'me_cart_26';
+const STORAGE_PREFIX = 'kv_cart_';
 
 const CartContext = createContext(null);
 
+function getStorageKey(userId) {
+  return userId ? `${STORAGE_PREFIX}${userId}` : null;
+}
+
 export function CartProvider({ children }) {
+  const { user } = useAuth();
+  const prevUserIdRef = useRef(user?.id ?? null);
+
   const [items, setItems] = useState(() => {
+    if (!user?.id) return [];
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = localStorage.getItem(getStorageKey(user.id));
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -15,12 +24,51 @@ export function CartProvider({ children }) {
   });
   const [isOpen, setIsOpen] = useState(false);
 
-  // Persist to localStorage
+  // State for triggering the login prompt
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
+  // When user changes (login/logout/switch account), load that user's cart or clear
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+    const prevUserId = prevUserIdRef.current;
+    const currentUserId = user?.id ?? null;
+
+    if (prevUserId !== currentUserId) {
+      prevUserIdRef.current = currentUserId;
+
+      if (currentUserId) {
+        // User logged in — load their cart from localStorage
+        try {
+          const saved = localStorage.getItem(getStorageKey(currentUserId));
+          setItems(saved ? JSON.parse(saved) : []);
+        } catch {
+          setItems([]);
+        }
+      } else {
+        // User logged out — clear cart in memory
+        setItems([]);
+      }
+    }
+  }, [user]);
+
+  // Persist to localStorage (only if user is logged in)
+  useEffect(() => {
+    if (user?.id) {
+      localStorage.setItem(getStorageKey(user.id), JSON.stringify(items));
+    }
+  }, [items, user]);
+
+  // Clean up old generic cart key from before this change
+  useEffect(() => {
+    localStorage.removeItem('me_cart_26');
+  }, []);
 
   const addItem = useCallback((product) => {
+    if (!user) {
+      // Not logged in — show login prompt
+      setShowLoginPrompt(true);
+      return;
+    }
+
     setItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       const maxStock = product.stock_quantity;
@@ -37,7 +85,7 @@ export function CartProvider({ children }) {
       if (maxStock != null && maxStock <= 0) return prev;
       return [...prev, { ...product, qty: 1 }];
     });
-  }, []);
+  }, [user]);
 
   const removeItem = useCallback((id) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
@@ -64,6 +112,7 @@ export function CartProvider({ children }) {
 
   const openCart = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
+  const dismissLoginPrompt = useCallback(() => setShowLoginPrompt(false), []);
 
   const cartCount = items.reduce((sum, item) => sum + item.qty, 0);
   const cartTotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -79,6 +128,8 @@ export function CartProvider({ children }) {
     clearCart,
     openCart,
     closeCart,
+    showLoginPrompt,
+    dismissLoginPrompt,
   };
 
   return (

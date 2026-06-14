@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import '../../styles/auth.css';
 
-export default function AuthModal({ isOpen, onClose }) {
+export default function AuthModal({ isOpen, onClose, message }) {
   const [mode, setMode] = useState('login'); // 'login' | 'signup'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -60,6 +60,9 @@ export default function AuthModal({ isOpen, onClose }) {
           </p>
         </div>
 
+        {message && (
+          <div className="auth-modal__info">{message}</div>
+        )}
         {error && <div className="auth-modal__error">{error}</div>}
         {success && <div className="auth-modal__success">{success}</div>}
 

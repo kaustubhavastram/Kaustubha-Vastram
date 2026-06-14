@@ -5,6 +5,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import CartDrawer from "./components/cart/CartDrawer";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import LoginPrompt from "./components/auth/LoginPrompt";
 
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
@@ -17,6 +18,7 @@ import Products from "./pages/admin/Products";
 import ProductForm from "./pages/admin/ProductForm";
 
 import "./styles/index.css";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function App() {
   return (
@@ -25,6 +27,7 @@ export default function App() {
         <CartProvider>
           <Header />
           <CartDrawer />
+          <LoginPrompt />
 
           <Routes>
             <Route path="/" element={<Home />} />
@@ -50,6 +53,7 @@ export default function App() {
           </Routes>
 
           <Footer />
+          <Analytics />
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>
