@@ -1,3 +1,5 @@
+import logo from "../../logo/logo.png";
+
 export default function Hero() {
   return (
     <section className="hero">
@@ -19,7 +21,7 @@ export default function Hero() {
         </div>
         <div className="hero__image">
           <img
-            src="/src/logo/logo.png"
+            src={logo}
             alt="Kaustubha-Vastram-Logo"
             onError={(e) =>
               e.target.parentElement.classList.add("img-fallback")
