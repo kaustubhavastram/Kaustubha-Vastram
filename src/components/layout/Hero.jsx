@@ -7,13 +7,12 @@ export default function Hero() {
         <div className="hero__text reveal">
           <p className="hero__eyebrow">Spring / Summer '26</p>
           <h1 className="hero__title">
-            Dresses for the
+            Tradition and Love
             <br />
-            <em>quiet romantics</em>
+            <em style={{fontSize:50}}>Every pleats holds a story within</em>
           </h1>
           <p className="hero__sub">
-            Thoughtfully crafted silhouettes in natural fabrics — made to be
-            loved, worn, and kept forever.
+            Made for Celebrations, Crafted for Compliments.
           </p>
           <a href="#collection" className="btn btn--dark">
             Explore the Collection
