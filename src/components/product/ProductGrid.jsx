@@ -23,6 +23,7 @@ export default function ProductGrid() {
       if (error) throw error;
 
       if (data && data.length > 0) {
+        console.log("📦 Products from DB:", data.map(p => ({ id: p.id, name: p.name, category: p.category })));
         setProducts(data);
       } else {
         // No products available yet

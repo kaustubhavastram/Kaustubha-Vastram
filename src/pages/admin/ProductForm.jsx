@@ -7,7 +7,7 @@ const CATEGORIES = ["all", "saree", "kurtha", "lehenga"];
 const emptyProduct = {
   name: "",
   price: "",
-  category: "midi",
+  category: "saree",
   tag: "",
   alt: "",
   available: true,
@@ -46,7 +46,7 @@ export default function ProductForm() {
       setForm({
         name: data.name || "",
         price: data.price?.toString() || "",
-        category: data.category || "midi",
+        category: data.category || "saree",
         tag: data.tag || "",
         alt: data.alt || "",
         available: data.available ?? true,
