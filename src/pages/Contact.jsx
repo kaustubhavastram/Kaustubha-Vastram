@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { sendContactEmail } from "../lib/emailService";
 
 /* ================================================================
    EDITABLE CONTACT INFORMATION
@@ -45,6 +46,8 @@ export default function Contact() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -55,11 +58,20 @@ export default function Contact() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // For now, just show a thank-you message.
-    // Replace this with your email/API integration later.
-    setSubmitted(true);
+    setError("");
+    setSending(true);
+
+    try {
+      await sendContactEmail(formData);
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Contact form error:", err);
+      setError("Failed to send your message. Please try again or contact us directly via email.");
+    } finally {
+      setSending(false);
+    }
   }
 
   const addr = CONTACT_INFO.address;
@@ -218,6 +230,9 @@ export default function Contact() {
           <div className="contact__form-wrap">
             <div className="info-page__card">
               <h2>Send Us a Message</h2>
+              {error && (
+                <div className="contact__error">{error}</div>
+              )}
               {submitted ? (
                 <div className="contact__success">
                   <span className="contact__success-icon">✓</span>
@@ -287,8 +302,8 @@ export default function Contact() {
                       required
                     />
                   </div>
-                  <button type="submit" className="btn btn--dark btn--full">
-                    Send Message
+                  <button type="submit" className="btn btn--dark btn--full" disabled={sending}>
+                    {sending ? "Sending…" : "Send Message"}
                   </button>
                 </form>
               )}

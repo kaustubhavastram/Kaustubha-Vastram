@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { sendWelcomeEmail } from '../lib/emailService';
 
 const AuthContext = createContext(null);
 
@@ -63,6 +64,10 @@ export function AuthProvider({ children }) {
       },
     });
     if (error) throw error;
+
+    // Send welcome email (fire-and-forget — never blocks sign-up)
+    sendWelcomeEmail({ name: fullName, email });
+
     return data;
   }
 

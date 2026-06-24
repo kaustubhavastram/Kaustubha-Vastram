@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
+import { sendNewProductEmail } from "../../lib/emailService";
 
 const CATEGORIES = ["all", "saree", "kurtha", "lehenga"];
 
@@ -221,6 +222,16 @@ export default function ProductForm() {
         .from("product_images")
         .insert(imageRows);
       if (imgErr) throw imgErr;
+
+      // Send new-product notification email to admin (only for new products)
+      if (!isEditing) {
+        sendNewProductEmail({
+          name: payload.name,
+          price: payload.price,
+          category: payload.category,
+          imageUrl: payload.image_url,
+        });
+      }
 
       navigate("/admin/products");
     } catch (err) {

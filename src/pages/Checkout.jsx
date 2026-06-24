@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { initiatePayment } from '../lib/razorpay';
+import { sendOrderEmail } from '../lib/emailService';
 import AuthModal from '../components/auth/AuthModal';
 
 export default function Checkout() {
@@ -113,6 +114,15 @@ export default function Checkout() {
               razorpay_order_id: response.razorpay_order_id,
             })
             .eq('id', order.id);
+
+          // Send order confirmation email (fire-and-forget)
+          sendOrderEmail({
+            name: profile?.full_name,
+            email: user.email,
+            orderId: order.id,
+            total: finalTotal,
+            items,
+          });
 
           clearCart();
           setProcessing(false);
