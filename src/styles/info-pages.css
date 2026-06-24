@@ -1,0 +1,601 @@
+/* ============ Info Pages — Shared Styles ============ */
+/* Used by: ShippingReturns, SizeGuide, Contact          */
+
+.info-page {
+  padding: 2rem 0 6rem;
+  min-height: 70vh;
+}
+
+/* ---------- Breadcrumb ---------- */
+.info-page__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+  color: var(--ink-soft);
+}
+
+.info-page__breadcrumb a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.info-page__breadcrumb a:hover {
+  color: var(--accent);
+}
+
+.info-page__breadcrumb-sep {
+  opacity: 0.4;
+}
+
+/* ---------- Header ---------- */
+.info-page__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.info-page__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 500;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+.info-page__subtitle {
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  max-width: 50ch;
+  margin-inline: auto;
+}
+
+/* ---------- Sections ---------- */
+.info-page__section {
+  margin-bottom: 3.5rem;
+}
+
+.info-page__icon-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-page__icon-header h2 {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.info-page__icon {
+  font-size: 1.6rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  display: grid;
+  place-items: center;
+  background: var(--cream-2);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ---------- Cards ---------- */
+.info-page__card {
+  background: var(--white);
+  border: 1px solid rgba(43, 37, 32, 0.08);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 24px rgba(43, 37, 32, 0.04);
+}
+
+.info-page__card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.info-page__card p {
+  color: var(--ink-soft);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+.info-page__card p:last-child {
+  margin-bottom: 0;
+}
+
+.info-page__card--highlight {
+  border-left: 4px solid var(--accent);
+  background: linear-gradient(135deg, var(--white), var(--cream));
+}
+
+/* ---------- Policy Badge ---------- */
+.info-page__policy-badge {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  margin-bottom: 1.2rem;
+}
+
+/* ---------- Lists ---------- */
+.info-page__list {
+  list-style: none;
+  padding: 0;
+}
+
+.info-page__list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.info-page__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.info-page__list li strong {
+  color: var(--ink);
+}
+
+.info-page__list--spaced li {
+  margin-bottom: 1.2rem;
+}
+
+/* ---------- Two-column grid ---------- */
+.info-page__grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+/* ---------- Note ---------- */
+.info-page__note {
+  margin-top: 1.5rem;
+  padding: 1rem 1.4rem;
+  background: var(--cream);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  border-left: 3px solid var(--accent);
+}
+
+/* ---------- CTA ---------- */
+.info-page__cta {
+  text-align: center;
+  padding: 3rem 0;
+  border-top: 1px solid rgba(43, 37, 32, 0.08);
+  margin-top: 1rem;
+}
+
+.info-page__cta p {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--ink-soft);
+}
+
+/* ============ Size Guide ============ */
+
+.size-guide__tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.size-guide__tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(43, 37, 32, 0.2);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.size-guide__tab:hover {
+  border-color: var(--ink);
+}
+
+.size-guide__tab--active {
+  background: var(--ink);
+  color: var(--cream);
+  border-color: var(--ink);
+}
+
+.size-guide__tab-icon {
+  font-size: 1.1rem;
+}
+
+.size-guide__content {
+  animation: fadeUp 0.4s ease both;
+}
+
+.size-guide__intro {
+  color: var(--ink-soft);
+  font-size: 1rem;
+  max-width: 65ch;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+/* ---------- Table ---------- */
+.size-guide__table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(43, 37, 32, 0.08);
+  box-shadow: 0 4px 24px rgba(43, 37, 32, 0.04);
+  margin-bottom: 1.5rem;
+}
+
+.size-guide__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.size-guide__table th {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--cream-2);
+  padding: 1rem 1.4rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(43, 37, 32, 0.1);
+}
+
+.size-guide__table td {
+  padding: 0.9rem 1.4rem;
+  border-bottom: 1px solid rgba(43, 37, 32, 0.06);
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.size-guide__table td strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.size-guide__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.size-guide__table tbody tr {
+  transition: background 0.2s;
+}
+
+.size-guide__table tbody tr:hover {
+  background: rgba(176, 137, 104, 0.06);
+}
+
+/* ---------- Note ---------- */
+.size-guide__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  padding: 1rem 1.4rem;
+  background: var(--cream);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+  line-height: 1.6;
+}
+
+.size-guide__note-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+/* ============ Contact ============ */
+
+.contact__layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.contact__details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.contact__detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.contact__detail-icon {
+  font-size: 1.3rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  display: grid;
+  place-items: center;
+  background: var(--cream-2);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.contact__detail-item h3 {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.3rem;
+}
+
+.contact__detail-item a,
+.contact__detail-item address {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  transition: color 0.3s;
+}
+
+.contact__detail-item a:hover {
+  color: var(--accent);
+}
+
+/* Business Hours */
+.contact__hours {
+  list-style: none;
+  padding: 0;
+}
+
+.contact__hours li {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  font-size: 0.9rem;
+  padding: 0.3rem 0;
+  color: var(--ink-soft);
+}
+
+.contact__hours li span:first-child {
+  color: var(--ink);
+  font-weight: 400;
+}
+
+/* Socials */
+.contact__socials {
+  display: flex;
+  gap: 1rem;
+}
+
+.contact__socials a {
+  font-size: 0.85rem;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid rgba(43, 37, 32, 0.2);
+  border-radius: 999px;
+  transition: var(--transition);
+}
+
+.contact__socials a:hover {
+  background: var(--ink);
+  color: var(--cream);
+  border-color: var(--ink);
+}
+
+/* Contact Note */
+.contact__note {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  padding: 1rem 1.2rem;
+  background: var(--cream-2);
+  border-radius: 8px;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ---------- Contact Form ---------- */
+.contact__form-wrap .info-page__card h2 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.contact__form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+}
+
+.contact__form-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.5rem;
+}
+
+.contact__form-group input,
+.contact__form-group textarea {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(43, 37, 32, 0.2);
+  border-radius: var(--radius);
+  background: var(--cream);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.contact__form-group input:focus,
+.contact__form-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.1);
+}
+
+.contact__form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* ---------- Success State ---------- */
+.contact__success {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.contact__success-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--white);
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
+
+.contact__success h3 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+}
+
+.contact__success p {
+  color: var(--ink-soft);
+  margin-bottom: 2rem;
+  max-width: 36ch;
+  margin-inline: auto;
+}
+
+/* ============ Responsive ============ */
+
+@media (max-width: 768px) {
+  .info-page__grid-two {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .info-page__card {
+    padding: 1.8rem 1.4rem;
+  }
+
+  .contact__layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .contact__form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .size-guide__tabs {
+    gap: 0.5rem;
+  }
+
+  .size-guide__tab {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.75rem;
+  }
+
+  /* Responsive table */
+  .size-guide__table thead {
+    display: none;
+  }
+
+  .size-guide__table,
+  .size-guide__table tbody,
+  .size-guide__table tr,
+  .size-guide__table td {
+    display: block;
+  }
+
+  .size-guide__table tr {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid rgba(43, 37, 32, 0.08);
+  }
+
+  .size-guide__table tr:last-child {
+    border-bottom: none;
+  }
+
+  .size-guide__table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+    border-bottom: none;
+  }
+
+  .size-guide__table td::before {
+    content: attr(data-label);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+}
+
+@media (max-width: 480px) {
+  .info-page {
+    padding: 1.5rem 0 4rem;
+  }
+
+  .info-page__header {
+    margin-bottom: 2.5rem;
+  }
+
+  .info-page__icon-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .contact__hours li {
+    gap: 1rem;
+  }
+}

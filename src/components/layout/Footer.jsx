@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Footer() {
   const location = useLocation();
@@ -10,9 +10,9 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer__inner">
         <div className="footer__brand">
-          <a href="/" className="nav__logo">
+          <Link to="/" className="nav__logo">
             Kaustubha <em>Vastram</em>
-          </a>
+          </Link>
           <p>Timeless dresses, made slowly and worn forever.</p>
         </div>
         <div className="footer__col">
@@ -23,9 +23,9 @@ export default function Footer() {
         </div>
         <div className="footer__col">
           <h4>Help</h4>
-          <a href="#">Shipping &amp; Returns</a>
-          <a href="#">Size Guide</a>
-          <a href="#">Contact</a>
+          <Link to="/shipping-returns">Shipping &amp; Returns</Link>
+          <Link to="/size-guide">Size Guide</Link>
+          <Link to="/contact">Contact</Link>
         </div>
         <div className="footer__col">
           <h4>Follow</h4>

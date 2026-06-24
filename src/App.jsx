@@ -12,6 +12,9 @@ import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
 import Profile from "./pages/Profile";
+import ShippingReturns from "./pages/ShippingReturns";
+import SizeGuide from "./pages/SizeGuide";
+import Contact from "./pages/Contact";
 import AdminLayout from "./pages/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Orders from "./pages/admin/Orders";
@@ -19,6 +22,7 @@ import Products from "./pages/admin/Products";
 import ProductForm from "./pages/admin/ProductForm";
 
 import "./styles/index.css";
+import "./styles/info-pages.css";
 import { Analytics } from "@vercel/analytics/react";
 
 export default function App() {
@@ -35,6 +39,9 @@ export default function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/shipping-returns" element={<ShippingReturns />} />
+            <Route path="/size-guide" element={<SizeGuide />} />
+            <Route path="/contact" element={<Contact />} />
 
             {/* Admin routes — protected, admin only */}
             <Route
