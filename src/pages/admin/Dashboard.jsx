@@ -49,10 +49,10 @@ export default function Dashboard() {
   }
 
   const statCards = [
-    { label: 'Total Orders', value: stats.totalOrders, icon: '📦' },
-    { label: 'Revenue', value: `₹ ${stats.revenue.toFixed(2)}`, icon: '💰' },
-    { label: 'Products', value: stats.totalProducts, icon: '👗' },
-    { label: 'Paid Orders', value: stats.paidOrders, icon: '✅' },
+    { label: 'Total Orders', value: stats.totalOrders, icon: '../src/logo/checkout.png' },
+    { label: 'Revenue', value: `₹ ${stats.revenue.toFixed(2)}`, icon: '../src/logo/rupee-indian.png' },
+    { label: 'Products', value: stats.totalProducts, icon: '../src/logo/products.png' },
+    { label: 'Paid Orders', value: stats.paidOrders, icon: '../src/logo/check.png' },
   ];
 
   function getStatusClass(status) {
@@ -83,7 +83,9 @@ export default function Dashboard() {
       <div className="admin__stats">
         {statCards.map((stat) => (
           <div key={stat.label} className="stat-card">
-            <div className="stat-card__icon">{stat.icon}</div>
+            <div className="stat-card__icon"> 
+              <img src={stat.icon} alt={`${stat.label} icon`} className="stat-card__image" />
+            </div>
             <div className="stat-card__value">{stat.value}</div>
             <div className="stat-card__label">{stat.label}</div>
           </div>

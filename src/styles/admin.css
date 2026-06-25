@@ -184,8 +184,9 @@
 }
 
 .stat-card__icon {
-  font-size: 1.6rem;
-  margin-bottom: 0.6rem;
+  width:20px;
+  height: 20px;;
+  margin-bottom: 1rem;
 }
 .stat-card__value {
   font-family: var(--font-serif);

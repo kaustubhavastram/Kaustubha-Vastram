@@ -31,7 +31,7 @@ export default function Footer() {
           <h4>Follow</h4>
           <a href="#">Instagram</a>
           <a href="#">Pinterest</a>
-          <a href="#">TikTok</a>
+          <a href="#">Facebook</a>
         </div>
       </div>
       <div className="footer__bottom">
