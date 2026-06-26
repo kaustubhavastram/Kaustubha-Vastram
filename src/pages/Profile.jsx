@@ -13,8 +13,89 @@ function getStatusClass(status) {
     shipped: 'status--shipped',
     delivered: 'status--delivered',
     cancelled: 'status--cancelled',
+    pickup_scheduled: 'status--shipped',
+    picked_up: 'status--shipped',
+    in_transit: 'status--shipped',
+    out_for_delivery: 'status--shipped',
   };
   return map[status] || '';
+}
+
+const SHIPPING_STEPS = [
+  { key: 'order_placed', label: 'Order Placed' },
+  { key: 'pickup_scheduled', label: 'Pickup Scheduled' },
+  { key: 'in_transit', label: 'In Transit' },
+  { key: 'out_for_delivery', label: 'Out for Delivery' },
+  { key: 'delivered', label: 'Delivered' },
+];
+
+function getShippingStepIndex(shippingStatus) {
+  const map = {
+    not_shipped: 0,
+    pickup_scheduled: 1,
+    picked_up: 2,
+    in_transit: 2,
+    out_for_delivery: 3,
+    delivered: 4,
+  };
+  return map[shippingStatus] ?? 0;
+}
+
+function ShippingTracker({ order }) {
+  const status = order.shipping_status || 'not_shipped';
+  const activeStep = getShippingStepIndex(status);
+
+  // Only show tracker for orders that have been paid or shipped
+  if (order.status === 'pending' || order.status === 'failed' || order.status === 'cancelled') {
+    return null;
+  }
+
+  return (
+    <div className="shipping-tracker">
+      <h4 className="shipping-tracker__title">Shipping Status</h4>
+      <div className="shipping-tracker__steps">
+        {SHIPPING_STEPS.map((step, idx) => {
+          let stepClass = 'shipping-tracker__step';
+          if (idx < activeStep) stepClass += ' shipping-tracker__step--done';
+          else if (idx === activeStep) stepClass += ' shipping-tracker__step--active';
+
+          return (
+            <div key={step.key} className={stepClass}>
+              <div className="shipping-tracker__dot" />
+              {idx < SHIPPING_STEPS.length - 1 && (
+                <div className="shipping-tracker__line" />
+              )}
+              <span className="shipping-tracker__label">{step.label}</span>
+            </div>
+          );
+        })}
+      </div>
+      {(order.courier_name || order.awb_number) && (
+        <div className="shipping-tracker__info">
+          {order.courier_name && (
+            <span className="shipping-tracker__courier">
+              📦 {order.courier_name}
+            </span>
+          )}
+          {order.awb_number && (
+            <span className="shipping-tracker__awb">
+              AWB: {order.awb_number}
+            </span>
+          )}
+        </div>
+      )}
+      {order.tracking_url && (
+        <a
+          href={order.tracking_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn--outline shipping-tracker__btn"
+        >
+          Track Package →
+        </a>
+      )}
+    </div>
+  );
 }
 
 export default function Profile() {
@@ -336,6 +417,7 @@ export default function Profile() {
 
                     {expandedOrder === order.id && (
                       <div className="profile__order-detail">
+                        <ShippingTracker order={order} />
                         {order.razorpay_payment_id && (
                           <div className="profile__order-payment">
                             <span className="profile__info-label">Payment ID</span>

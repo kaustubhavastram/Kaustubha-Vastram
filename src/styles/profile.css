@@ -380,3 +380,130 @@
     justify-content: space-between;
   }
 }
+
+/* ============ Shipping Tracker ============ */
+
+.shipping-tracker {
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(43, 37, 32, 0.06);
+  margin-bottom: 0.8rem;
+}
+
+.shipping-tracker__title {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+}
+
+.shipping-tracker__steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  padding: 0 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.shipping-tracker__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.shipping-tracker__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(43, 37, 32, 0.12);
+  border: 2px solid rgba(43, 37, 32, 0.15);
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.shipping-tracker__line {
+  position: absolute;
+  top: 8px;
+  left: calc(50% + 10px);
+  right: calc(-50% + 10px);
+  height: 2px;
+  background: rgba(43, 37, 32, 0.1);
+  z-index: 1;
+}
+
+.shipping-tracker__label {
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 0.5rem;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+/* Done step */
+.shipping-tracker__step--done .shipping-tracker__dot {
+  background: var(--accent, #b08968);
+  border-color: var(--accent, #b08968);
+}
+
+.shipping-tracker__step--done .shipping-tracker__line {
+  background: var(--accent, #b08968);
+}
+
+.shipping-tracker__step--done .shipping-tracker__label {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Active step */
+.shipping-tracker__step--active .shipping-tracker__dot {
+  background: white;
+  border-color: var(--accent, #b08968);
+  border-width: 3px;
+  box-shadow: 0 0 0 4px rgba(176, 137, 104, 0.2);
+}
+
+.shipping-tracker__step--active .shipping-tracker__label {
+  color: var(--accent, #b08968);
+  font-weight: 600;
+}
+
+/* Info row */
+.shipping-tracker__info {
+  display: flex;
+  gap: 1.2rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.shipping-tracker__courier {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.shipping-tracker__awb {
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 0.78rem;
+}
+
+.shipping-tracker__btn {
+  font-size: 0.78rem;
+  padding: 0.5rem 1.2rem;
+}
+
+@media (max-width: 500px) {
+  .shipping-tracker__steps {
+    padding: 0;
+  }
+  .shipping-tracker__label {
+    font-size: 0.6rem;
+  }
+}

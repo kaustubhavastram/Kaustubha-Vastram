@@ -6,6 +6,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import CartDrawer from "./components/cart/CartDrawer";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import ScrollToHash from "./components/ScrollToHash";
 import LoginPrompt from "./components/auth/LoginPrompt";
 
 import Home from "./pages/Home";
@@ -28,6 +29,7 @@ import { Analytics } from "@vercel/analytics/react";
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToHash />
       <AuthProvider>
         <CartProvider>
           <Header />

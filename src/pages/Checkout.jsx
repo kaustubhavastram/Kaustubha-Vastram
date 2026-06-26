@@ -112,6 +112,11 @@ export default function Checkout() {
               status: 'paid',
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_order_id: response.razorpay_order_id,
+              shipping_address: {
+                address: profile?.address || '',
+                phone: profile?.phone || '',
+                name: profile?.full_name || '',
+              },
             })
             .eq('id', order.id);
 

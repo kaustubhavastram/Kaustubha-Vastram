@@ -18,6 +18,8 @@ export default function Orders() {
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [orderItems, setOrderItems] = useState({});
   const [orderProfiles, setOrderProfiles] = useState({});
+  const [shippingOrder, setShippingOrder] = useState(null);
+  const [shippingError, setShippingError] = useState("");
 
   useEffect(() => {
     fetchOrders();
@@ -98,6 +100,72 @@ export default function Orders() {
       setOrders((prev) =>
         prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)),
       );
+    }
+  }
+
+  async function handleShipOrder(order) {
+    setShippingOrder(order.id);
+    setShippingError("");
+
+    try {
+      // Get customer profile
+      const profile = orderProfiles[order.user_id];
+      const address = order.shipping_address || {};
+
+      // Get order items for the payload
+      const items = orderItems[order.id] || [];
+
+      const res = await fetch("/api/shiprocket/create-shipment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: order.id,
+          customerName: address.name || profile?.full_name || "Customer",
+          customerEmail: profile?.email || "",
+          customerPhone: address.phone || profile?.phone || "",
+          shippingAddress: {
+            address: address.address || profile?.address || "",
+            city: address.city || "",
+            state: address.state || "",
+            pincode: address.pincode || address.postal_code || "",
+          },
+          items: items.map((item) => ({
+            id: item.product_id,
+            name: item.products?.name || "Product",
+            quantity: item.quantity,
+            price: parseFloat(item.price_at_purchase),
+          })),
+          totalAmount: parseFloat(order.total),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to create shipment");
+      }
+
+      // Update local state with shipping info
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id === order.id
+            ? {
+                ...o,
+                status: "shipped",
+                shipping_status: "pickup_scheduled",
+                shiprocket_order_id: data.shiprocket_order_id,
+                awb_number: data.awb_code,
+                courier_name: data.courier_name,
+                tracking_url: data.tracking_url,
+              }
+            : o,
+        ),
+      );
+    } catch (err) {
+      console.error("Ship order error:", err);
+      setShippingError(err.message);
+    } finally {
+      setShippingOrder(null);
     }
   }
 
@@ -271,6 +339,55 @@ export default function Orders() {
                                 <p>No address on file</p>
                               )}
                             </div>
+                          </div>
+
+                          {/* Shipping Info Section */}
+                          <div className="admin__info-section">
+                            <h4>Shipping</h4>
+                            {order.awb_number ? (
+                              <div className="admin__shipping-info">
+                                <p><strong>Courier:</strong> {order.courier_name || "—"}</p>
+                                <p><strong>AWB:</strong> <span className="admin__mono">{order.awb_number}</span></p>
+                                <p>
+                                  <strong>Status:</strong>{" "}
+                                  <span className={`status-badge ${getStatusClass(order.shipping_status || "shipped")}`}>
+                                    {(order.shipping_status || "shipped").replace(/_/g, " ")}
+                                  </span>
+                                </p>
+                                {order.tracking_url && (
+                                  <a
+                                    href={order.tracking_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="admin__track-link"
+                                  >
+                                    Track Package →
+                                  </a>
+                                )}
+                              </div>
+                            ) : order.status === "paid" ? (
+                              <div className="admin__ship-action">
+                                {shippingError && shippingOrder === null && (
+                                  <p className="admin__ship-error">{shippingError}</p>
+                                )}
+                                <button
+                                  className="btn btn--dark admin__ship-btn"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleShipOrder(order);
+                                  }}
+                                  disabled={shippingOrder === order.id}
+                                >
+                                  {shippingOrder === order.id
+                                    ? "Creating Shipment…"
+                                    : "📦 Ship Order via Shiprocket"}
+                                </button>
+                              </div>
+                            ) : (
+                              <p className="admin__ship-note">
+                                {order.status === "pending" ? "Awaiting payment" : "Not eligible for shipping"}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <h4>Order Items</h4>

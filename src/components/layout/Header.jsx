@@ -47,19 +47,24 @@ export default function Header() {
 
           <ul className={`nav__links${mobileMenuOpen ? " open" : ""}`}>
             <li>
-              <a href="#collection" onClick={closeMobile}>
+              <Link to="/" onClick={closeMobile}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/#collection" onClick={closeMobile}>
                 Shop
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#story" onClick={closeMobile}>
+              <Link to="/#story" onClick={closeMobile}>
                 Our Story
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#lookbook" onClick={closeMobile}>
+              <Link to="/#lookbook" onClick={closeMobile}>
                 Lookbook
-              </a>
+              </Link>
             </li>
           </ul>
 
