@@ -45,15 +45,15 @@ export default function ProductCard({ product }) {
             )}
           </div>
         )}
-        <button
-          className="card__add"
-          onClick={handleAdd}
-          disabled={!effectivelyAvailable}
-          aria-label={`Add ${product.name} to cart`}
-        >
-          {effectivelyAvailable ? "Add to Cart" : "Unavailable"}
-        </button>
       </div>
+      <button
+        className="card__add"
+        onClick={handleAdd}
+        disabled={!effectivelyAvailable}
+        aria-label={`Add ${product.name} to cart`}
+      >
+        {effectivelyAvailable ? "Add to Cart" : "Unavailable"}
+      </button>
       <div className="card__name">{product.name}</div>
       <div className="card__meta">
         <span>

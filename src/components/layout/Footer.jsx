@@ -13,7 +13,7 @@ export default function Footer() {
           <Link to="/" className="nav__logo">
             Kaustubha <em>Vastram</em>
           </Link>
-          <p>Timeless dresses, made slowly and worn forever.</p>
+          <p>Every pleats holds a story within</p>
         </div>
         <div className="footer__col">
           <h4>Shop</h4>

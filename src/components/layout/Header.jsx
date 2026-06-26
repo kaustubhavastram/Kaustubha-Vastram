@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import AuthModal from "../auth/AuthModal";
+import logo from "../../logo/logo3.png";
 
 export default function Header() {
   const { cartCount, openCart } = useCart();
@@ -35,36 +36,30 @@ export default function Header() {
     <>
       <header className="header" id="header">
         <nav className="nav container">
+          {/* Hamburger — mobile only */}
           <button
             className="nav__toggle"
             onClick={toggleMobile}
-            aria-label="Open menu"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
             <span></span>
             <span></span>
             <span></span>
           </button>
 
-          <ul className={`nav__links${mobileMenuOpen ? " open" : ""}`}>
+          {/* Desktop nav links — hidden on mobile via CSS */}
+          <ul className="nav__links">
             <li>
-              <Link to="/" onClick={closeMobile}>
-                Home
-              </Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/#collection" onClick={closeMobile}>
-                Shop
-              </Link>
+              <Link to="/#collection">Shop</Link>
             </li>
             <li>
-              <Link to="/#story" onClick={closeMobile}>
-                Our Story
-              </Link>
+              <Link to="/#story">Our Story</Link>
             </li>
             <li>
-              <Link to="/#lookbook" onClick={closeMobile}>
-                Lookbook
-              </Link>
+              <Link to="/#lookbook">Lookbook</Link>
             </li>
           </ul>
 
@@ -123,6 +118,68 @@ export default function Header() {
           </div>
         </nav>
       </header>
+
+      {/* Mobile slide-out menu — fully separate from header grid */}
+      <div
+        className={`mobile-menu${mobileMenuOpen ? " mobile-menu--open" : ""}`}
+      >
+        <div className="mobile-menu__backdrop" onClick={closeMobile} />
+        <div className="mobile-menu__panel">
+          <button
+            className="mobile-menu__close"
+            onClick={closeMobile}
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
+          <div className="mobile-menu__brand">
+            <img src={logo} alt="Kaustubha Vastram" className="mobile-menu__logo" />
+            <span className="mobile-menu__brand-name">
+              Kaustubha <em>Vastram</em>
+            </span>
+          </div>
+          <ul className="mobile-menu__links">
+            <li>
+              <Link to="/" onClick={closeMobile}>Home</Link>
+            </li>
+            <li>
+              <Link to="/#collection" onClick={closeMobile}>Shop</Link>
+            </li>
+            <li>
+              <Link to="/#story" onClick={closeMobile}>Our Story</Link>
+            </li>
+            <li>
+              <Link to="/#lookbook" onClick={closeMobile}>Lookbook</Link>
+            </li>
+          </ul>
+          <div className="mobile-menu__divider" />
+          <ul className="mobile-menu__links">
+            {user ? (
+              <>
+                <li>
+                  <Link to="/profile" onClick={closeMobile}>My Account</Link>
+                </li>
+                {isAdmin && (
+                  <li>
+                    <Link to="/admin" onClick={closeMobile}>Admin</Link>
+                  </li>
+                )}
+                <li>
+                  <button onClick={() => { signOut(); closeMobile(); }}>
+                    Sign Out
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
+                <button onClick={() => { setAuthModalOpen(true); closeMobile(); }}>
+                  Sign In
+                </button>
+              </li>
+            )}
+          </ul>
+        </div>
+      </div>
 
       <AuthModal
         isOpen={authModalOpen}

@@ -9,7 +9,7 @@ export default function Hero() {
           <h1 className="hero__title">
             Tradition and Love
             <br />
-            <em style={{fontSize:50}}>Every pleats holds a story within</em>
+            <em>Every pleats holds a story within</em>
           </h1>
           <p className="hero__sub">
             Made for Celebrations, Crafted for Compliments.
