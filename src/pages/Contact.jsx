@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { sendContactEmail } from "../lib/emailService";
+import { supabase } from "../lib/supabase";
 import phoneIcon from "../logo/phone-call.png";
 import mailIcon from "../logo/mail.png";
 import locationIcon from "../logo/location.png";
@@ -70,6 +71,22 @@ export default function Contact() {
     setSending(true);
 
     try {
+      // Save message to Supabase so it appears in admin panel
+      const { error: dbError } = await supabase
+        .from("contact_messages")
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject || null,
+          message: formData.message,
+        });
+
+      if (dbError) {
+        console.error("Failed to save message to database:", dbError);
+        // Don't block the user — still try to send the email
+      }
+
+      // Send email notification to admin
       await sendContactEmail(formData);
       setSubmitted(true);
     } catch (err) {

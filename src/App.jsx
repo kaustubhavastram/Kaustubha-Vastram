@@ -21,6 +21,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import Orders from "./pages/admin/Orders";
 import Products from "./pages/admin/Products";
 import ProductForm from "./pages/admin/ProductForm";
+import Messages from "./pages/admin/Messages";
 
 import "./styles/index.css";
 import "./styles/info-pages.css";
@@ -59,6 +60,7 @@ export default function App() {
               <Route path="products" element={<Products />} />
               <Route path="products/new" element={<ProductForm />} />
               <Route path="products/:id" element={<ProductForm />} />
+              <Route path="messages" element={<Messages />} />
             </Route>
           </Routes>
 

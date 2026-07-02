@@ -4,6 +4,7 @@ import '../../styles/admin.css';
 import dashboard from "../../logo/dashboard.png";
 import orders from "../../logo/clipboard.png";
 import products from "../../logo/woman-clothes.png";
+import messagesIcon from "../../logo/mail.png";
 
 export default function AdminLayout() {
   const { user, signOut } = useAuth();
@@ -52,6 +53,15 @@ export default function AdminLayout() {
           >
             <span className="admin__nav-icon"><img src={products} alt="Products"/></span>
             Products
+          </NavLink>
+          <NavLink
+            to="/admin/messages"
+            className={({ isActive }) =>
+              `admin__nav-link${isActive ? ' active' : ''}`
+            }
+          >
+            <span className="admin__nav-icon"><img src={messagesIcon} alt="Messages"/></span>
+            Messages
           </NavLink>
         </nav>
 

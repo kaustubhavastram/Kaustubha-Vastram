@@ -4,7 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { initiatePayment } from '../lib/razorpay';
-import { sendOrderEmail } from '../lib/emailService';
+import { sendOrderEmail, sendOrderAdminEmail } from '../lib/emailService';
 import AuthModal from '../components/auth/AuthModal';
 
 export default function Checkout() {
@@ -122,6 +122,15 @@ export default function Checkout() {
 
           // Send order confirmation email (fire-and-forget)
           sendOrderEmail({
+            name: profile?.full_name,
+            email: user.email,
+            orderId: order.id,
+            total: finalTotal,
+            items,
+          });
+
+          // Notify admin about the new order (fire-and-forget)
+          sendOrderAdminEmail({
             name: profile?.full_name,
             email: user.email,
             orderId: order.id,

@@ -5,6 +5,7 @@ import Razorpay from "razorpay";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import sendEmailHandler from "./api/send-email.js";
 
 const app = express();
 app.use(express.json());
@@ -71,6 +72,10 @@ app.post("/api/create-order", async (req, res) => {
   }
 });
 
+// ── POST /api/send-email ───────────────────────────────────────────
+// Sends emails via Resend (contact, welcome, order, product).
+app.post("/api/send-email", (req, res) => sendEmailHandler(req, res));
+
 // ── POST /api/verify-payment ───────────────────────────────────────
 // Verifies the Razorpay payment signature using HMAC-SHA256.
 app.post("/api/verify-payment", (req, res) => {
@@ -129,11 +134,11 @@ if (fs.existsSync(distPath)) {
   );
 
   // SPA fallback routing (must be placed after other routes like /api)
-  app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api/")) {
-      return next(); // Let API 404s handle themselves
+  app.use((req, res, next) => {
+    if (req.method === 'GET' && !req.path.startsWith("/api/")) {
+      return res.sendFile(path.join(distPath, "index.html"));
     }
-    res.sendFile(path.join(distPath, "index.html"));
+    next();
   });
 } else {
   console.log(
