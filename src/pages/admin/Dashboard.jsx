@@ -1,5 +1,9 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { useState, useEffect } from "react";
+import { supabase } from "../../lib/supabase";
+import checkoutIcon from "../../logo/checkout.png";
+import rupeeIcon from "../../logo/rupee-indian.png";
+import productsIcon from "../../logo/products.png";
+import checkIcon from "../../logo/check.png";
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -20,18 +24,26 @@ export default function Dashboard() {
     try {
       // Fetch orders
       const { data: orders } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("orders")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       // Fetch products count
       const { count: productCount } = await supabase
-        .from('products')
-        .select('*', { count: 'exact', head: true });
+        .from("products")
+        .select("*", { count: "exact", head: true });
 
       const allOrders = orders || [];
-      const paidOrders = allOrders.filter((o) => o.status === 'paid' || o.status === 'shipped' || o.status === 'delivered');
-      const revenue = paidOrders.reduce((sum, o) => sum + parseFloat(o.total), 0);
+      const paidOrders = allOrders.filter(
+        (o) =>
+          o.status === "paid" ||
+          o.status === "shipped" ||
+          o.status === "delivered",
+      );
+      const revenue = paidOrders.reduce(
+        (sum, o) => sum + parseFloat(o.total),
+        0,
+      );
 
       setStats({
         totalOrders: allOrders.length,
@@ -42,29 +54,33 @@ export default function Dashboard() {
 
       setRecentOrders(allOrders.slice(0, 5));
     } catch (err) {
-      console.error('Dashboard fetch error:', err);
+      console.error("Dashboard fetch error:", err);
     } finally {
       setLoading(false);
     }
   }
 
   const statCards = [
-    { label: 'Total Orders', value: stats.totalOrders, icon: '../src/logo/checkout.png' },
-    { label: 'Revenue', value: `₹ ${stats.revenue.toFixed(2)}`, icon: '../src/logo/rupee-indian.png' },
-    { label: 'Products', value: stats.totalProducts, icon: '../src/logo/products.png' },
-    { label: 'Paid Orders', value: stats.paidOrders, icon: '../src/logo/check.png' },
+    { label: "Total Orders", value: stats.totalOrders, icon: checkoutIcon },
+    {
+      label: "Revenue",
+      value: `₹ ${stats.revenue.toFixed(2)}`,
+      icon: rupeeIcon,
+    },
+    { label: "Products", value: stats.totalProducts, icon: productsIcon },
+    { label: "Paid Orders", value: stats.paidOrders, icon: checkIcon },
   ];
 
   function getStatusClass(status) {
     const map = {
-      pending: 'status--pending',
-      paid: 'status--paid',
-      failed: 'status--failed',
-      shipped: 'status--shipped',
-      delivered: 'status--delivered',
-      cancelled: 'status--cancelled',
+      pending: "status--pending",
+      paid: "status--paid",
+      failed: "status--failed",
+      shipped: "status--shipped",
+      delivered: "status--delivered",
+      cancelled: "status--cancelled",
     };
-    return map[status] || '';
+    return map[status] || "";
   }
 
   if (loading) {
@@ -83,8 +99,12 @@ export default function Dashboard() {
       <div className="admin__stats">
         {statCards.map((stat) => (
           <div key={stat.label} className="stat-card">
-            <div className="stat-card__icon"> 
-              <img src={stat.icon} alt={`${stat.label} icon`} className="stat-card__image" />
+            <div className="stat-card__icon">
+              <img
+                src={stat.icon}
+                alt={`${stat.label} icon`}
+                className="stat-card__image"
+              />
             </div>
             <div className="stat-card__value">{stat.value}</div>
             <div className="stat-card__label">{stat.label}</div>
@@ -112,7 +132,9 @@ export default function Dashboard() {
                   <td className="admin__mono">{order.id.slice(0, 8)}…</td>
                   <td>₹{parseFloat(order.total).toFixed(2)}</td>
                   <td>
-                    <span className={`status-badge ${getStatusClass(order.status)}`}>
+                    <span
+                      className={`status-badge ${getStatusClass(order.status)}`}
+                    >
                       {order.status}
                     </span>
                   </td>
