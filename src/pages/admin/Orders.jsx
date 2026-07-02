@@ -106,7 +106,7 @@ export default function Orders() {
       setExpandedOrder(null);
     } else {
       setExpandedOrder(orderId);
-      const order = orders.find(o => o.id === orderId);
+      const order = orders.find((o) => o.id === orderId);
       if (order && order.user_id) {
         fetchOrderProfile(order.user_id);
       }
@@ -145,14 +145,16 @@ export default function Orders() {
       <h1>Orders</h1>
 
       {error && (
-        <div style={{ 
-          padding: '1rem', 
-          marginBottom: '1rem', 
-          background: '#fee', 
-          border: '1px solid #fcc', 
-          borderRadius: '4px',
-          color: '#c33'
-        }}>
+        <div
+          style={{
+            padding: "1rem",
+            marginBottom: "1rem",
+            background: "#fee",
+            border: "1px solid #fcc",
+            borderRadius: "4px",
+            color: "#c33",
+          }}
+        >
           <strong>Error:</strong> {error}
         </div>
       )}
@@ -182,8 +184,8 @@ export default function Orders() {
 
       {filtered.length === 0 ? (
         <p className="admin__empty">
-          {orders.length === 0 
-            ? "No orders found. Orders will appear here once customers place them." 
+          {orders.length === 0
+            ? "No orders found. Orders will appear here once customers place them."
             : "No orders match the selected filter."}
         </p>
       ) : (
@@ -249,20 +251,40 @@ export default function Orders() {
                             <h4>Customer Information</h4>
                             {orderProfiles[order.user_id] ? (
                               <>
-                                <p><strong>Name:</strong> {orderProfiles[order.user_id]?.full_name || "N/A"}</p>
-                                <p><strong>Email:</strong> {orderProfiles[order.user_id]?.email || "N/A"}</p>
-                                <p><strong>Phone:</strong> {orderProfiles[order.user_id]?.phone || "N/A"}</p>
+                                <p>
+                                  <strong>Name:</strong>{" "}
+                                  {orderProfiles[order.user_id]?.full_name ||
+                                    "N/A"}
+                                </p>
+                                <p>
+                                  <strong>Email:</strong>{" "}
+                                  {orderProfiles[order.user_id]?.email || "N/A"}
+                                </p>
+                                <p>
+                                  <strong>Phone:</strong>{" "}
+                                  {orderProfiles[order.user_id]?.phone || "N/A"}
+                                </p>
                               </>
                             ) : (
                               <p>Loading customer info…</p>
                             )}
                             <div style={{ marginTop: "1rem" }}>
-                              <h4 style={{ marginBottom: "0.5rem" }}>Shipping Address</h4>
+                              <h4 style={{ marginBottom: "0.5rem" }}>
+                                Shipping Address
+                              </h4>
                               {order.shipping_address ? (
                                 <>
-                                  <p>{order.shipping_address.address || "N/A"}</p>
+                                  <p>
+                                    {order.shipping_address.address || "N/A"}
+                                  </p>
                                   {order.shipping_address.city && (
-                                    <p>{order.shipping_address.city}{order.shipping_address.state ? `, ${order.shipping_address.state}` : ""} {order.shipping_address.postal_code || ""}</p>
+                                    <p>
+                                      {order.shipping_address.city}
+                                      {order.shipping_address.state
+                                        ? `, ${order.shipping_address.state}`
+                                        : ""}{" "}
+                                      {order.shipping_address.postal_code || ""}
+                                    </p>
                                   )}
                                 </>
                               ) : orderProfiles[order.user_id]?.address ? (
@@ -275,14 +297,26 @@ export default function Orders() {
 
                           <div className="admin__info-section">
                             <h4>Shipping</h4>
-                            {order.awb_number || order.courier_name || order.tracking_url ? (
+                            {order.awb_number ||
+                            order.courier_name ||
+                            order.tracking_url ? (
                               <div className="admin__shipping-info">
-                                <p><strong>Courier:</strong> {order.courier_name || "—"}</p>
-                                <p><strong>AWB:</strong> <span className="admin__mono">{order.awb_number || "—"}</span></p>
+                                <p>
+                                  <strong>Courier:</strong>{" "}
+                                  {order.courier_name || "—"}
+                                </p>
+                                <p>
+                                  <strong>AWB:</strong>{" "}
+                                  <span className="admin__mono">
+                                    {order.awb_number || "—"}
+                                  </span>
+                                </p>
                                 {order.shipping_status && (
                                   <p>
                                     <strong>Status:</strong>{" "}
-                                    <span className={`status-badge ${getStatusClass(order.shipping_status)}`}>
+                                    <span
+                                      className={`status-badge ${getStatusClass(order.shipping_status)}`}
+                                    >
                                       {order.shipping_status.replace(/_/g, " ")}
                                     </span>
                                   </p>
@@ -300,7 +334,8 @@ export default function Orders() {
                               </div>
                             ) : (
                               <p className="admin__ship-note">
-                                Shipping updates are managed separately for this order.
+                                Shipping updates are managed separately for this
+                                order.
                               </p>
                             )}
                           </div>
