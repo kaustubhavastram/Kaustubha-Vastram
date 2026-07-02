@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { sendContactEmail } from "../lib/emailService";
+import phoneIcon from "../logo/phone-call.png";
+import mailIcon from "../logo/mail.png";
+import locationIcon from "../logo/location.png";
+import clockIcon from "../logo/clock.png";
 
 /* ================================================================
    EDITABLE CONTACT INFORMATION
@@ -10,20 +14,21 @@ import { sendContactEmail } from "../lib/emailService";
    ================================================================ */
 
 const CONTACT_INFO = {
-  phone: "+91 98765 43210",
-  email: "hello@kaustubhavastram.com",
-  whatsapp: "+91 98765 43210", // WhatsApp number (set to "" to hide)
+  phone: "+91 63665 30417",
+  email: "kaustubhavastram@gmail.com",
+  whatsapp: "", // WhatsApp number (set to "" to hide)
   address: {
-    line1: "Kaustubha Vastram",
-    line2: "123, Silk Bazaar Road",
-    city: "Kanchipuram",
-    state: "Tamil Nadu",
-    pincode: "631501",
+    line1: "Shree Rajarajeshwari Nilaya,",
+    line2: "Mahalingeshwara Temple Road,",
+    line3: "Ishwara Nagara Kula Kavoor,",
+    city: "Mangalore",
+    state: "Karnataka",
+    pincode: "575015",
     country: "India",
   },
   // Set any social link to "" to hide it
   socials: {
-    instagram: "https://instagram.com/kaustubhavastram",
+    instagram: "",
     pinterest: "",
     facebook: "",
   },
@@ -68,14 +73,22 @@ export default function Contact() {
       setSubmitted(true);
     } catch (err) {
       console.error("Contact form error:", err);
-      setError("Failed to send your message. Please try again or contact us directly via email.");
+      setError(
+        "Failed to send your message. Please try again or contact us directly via email.",
+      );
     } finally {
       setSending(false);
     }
   }
 
   const addr = CONTACT_INFO.address;
-  const fullAddress = [addr.line1, addr.line2, `${addr.city}, ${addr.state} ${addr.pincode}`, addr.country]
+  const fullAddress = [
+    addr.line1,
+    addr.line2,
+    addr.line3,
+    `${addr.city}, ${addr.state} ${addr.pincode}`,
+    addr.country,
+  ]
     .filter(Boolean)
     .join("\n");
 
@@ -104,7 +117,9 @@ export default function Contact() {
             {/* Phone */}
             {CONTACT_INFO.phone && (
               <div className="contact__detail-item">
-                <span className="contact__detail-icon">📞</span>
+                <span className="contact__detail-icon">
+                  <img src={phoneIcon} alt="Phone Icon" />
+                </span>
                 <div>
                   <h3>Phone</h3>
                   <a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, "")}`}>
@@ -134,7 +149,9 @@ export default function Contact() {
             {/* Email */}
             {CONTACT_INFO.email && (
               <div className="contact__detail-item">
-                <span className="contact__detail-icon">✉️</span>
+                <span className="contact__detail-icon">
+                  <img src={mailIcon} alt="Mail Icon" />
+                </span>
                 <div>
                   <h3>Email</h3>
                   <a href={`mailto:${CONTACT_INFO.email}`}>
@@ -147,10 +164,14 @@ export default function Contact() {
             {/* Address */}
             {addr.line1 && (
               <div className="contact__detail-item">
-                <span className="contact__detail-icon">📍</span>
+                <span className="contact__detail-icon">
+                  <img src={locationIcon} alt="Location Icon" />
+                </span>
                 <div>
                   <h3>Visit Us</h3>
-                  <address style={{ fontStyle: "normal", whiteSpace: "pre-line" }}>
+                  <address
+                    style={{ fontStyle: "normal", whiteSpace: "pre-line" }}
+                  >
                     {fullAddress}
                   </address>
                 </div>
@@ -160,7 +181,9 @@ export default function Contact() {
             {/* Business Hours */}
             {CONTACT_INFO.businessHours && (
               <div className="contact__detail-item">
-                <span className="contact__detail-icon">🕐</span>
+                <span className="contact__detail-icon">
+                  <img src={clockIcon} alt="Clock Icon" />
+                </span>
                 <div>
                   <h3>Business Hours</h3>
                   <ul className="contact__hours">
@@ -230,9 +253,7 @@ export default function Contact() {
           <div className="contact__form-wrap">
             <div className="info-page__card">
               <h2>Send Us a Message</h2>
-              {error && (
-                <div className="contact__error">{error}</div>
-              )}
+              {error && <div className="contact__error">{error}</div>}
               {submitted ? (
                 <div className="contact__success">
                   <span className="contact__success-icon">✓</span>
@@ -245,7 +266,12 @@ export default function Contact() {
                     className="btn btn--outline"
                     onClick={() => {
                       setSubmitted(false);
-                      setFormData({ name: "", email: "", subject: "", message: "" });
+                      setFormData({
+                        name: "",
+                        email: "",
+                        subject: "",
+                        message: "",
+                      });
                     }}
                   >
                     Send Another Message
@@ -302,7 +328,11 @@ export default function Contact() {
                       required
                     />
                   </div>
-                  <button type="submit" className="btn btn--dark btn--full" disabled={sending}>
+                  <button
+                    type="submit"
+                    className="btn btn--dark btn--full"
+                    disabled={sending}
+                  >
                     {sending ? "Sending…" : "Send Message"}
                   </button>
                 </form>
