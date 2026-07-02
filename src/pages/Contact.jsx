@@ -5,6 +5,7 @@ import phoneIcon from "../logo/phone-call.png";
 import mailIcon from "../logo/mail.png";
 import locationIcon from "../logo/location.png";
 import clockIcon from "../logo/clock.png";
+import whatsappIcon from "../logo/whatsapp.png";
 
 /* ================================================================
    EDITABLE CONTACT INFORMATION
@@ -16,7 +17,7 @@ import clockIcon from "../logo/clock.png";
 const CONTACT_INFO = {
   phone: "+91 63665 30417",
   email: "kaustubhavastram@gmail.com",
-  whatsapp: "", // WhatsApp number (set to "" to hide)
+  whatsapp: "+91 63665 30417", // WhatsApp number (set to "" to hide)
   address: {
     line1: "Shree Rajarajeshwari Nilaya,",
     line2: "Mahalingeshwara Temple Road,",
@@ -132,7 +133,9 @@ export default function Contact() {
             {/* WhatsApp */}
             {CONTACT_INFO.whatsapp && (
               <div className="contact__detail-item">
-                <span className="contact__detail-icon">💬</span>
+                <span className="contact__detail-icon">
+                  <img src={whatsappIcon} alt="Whatsapp Icon" />
+                </span>
                 <div>
                   <h3>WhatsApp</h3>
                   <a
