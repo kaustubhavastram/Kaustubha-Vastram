@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import AnnouncementBar from '../components/layout/AnnouncementBar';
+//import AnnouncementBar from '../components/layout/AnnouncementBar';
 import Hero from '../components/layout/Hero';
 import Marquee from '../components/layout/Marquee';
 import ProductGrid from '../components/product/ProductGrid';
@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
     <>
-      <AnnouncementBar />
+      {/* <AnnouncementBar /> */}
       <Hero />
       <Marquee />
       <ProductGrid />

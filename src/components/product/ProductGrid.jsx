@@ -60,8 +60,8 @@ export default function ProductGrid() {
     <section className="section collection" id="collection">
       <div className="container">
         <div className="section__head reveal">
-          <p className="section__eyebrow">The Edit</p>
-          <h2 className="section__title">Featured Dresses</h2>
+          <p className="section__eyebrow">COLLECTIONS</p>
+          <h2 className="section__title">Our Collections</h2>
         </div>
 
         {/* Search Bar */}

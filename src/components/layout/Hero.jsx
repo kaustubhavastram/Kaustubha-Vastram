@@ -5,7 +5,7 @@ export default function Hero() {
     <section className="hero">
       <div className="hero__inner container">
         <div className="hero__text reveal">
-          <p className="hero__eyebrow">Spring / Summer '26</p>
+          <p className="hero__eyebrow">KAUSTUBHA VASTRAM / HOME</p>
           <h1 className="hero__title">
             Tradition and Love
             <br />

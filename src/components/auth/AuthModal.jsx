@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import '../../styles/auth.css';
+import { Eye, EyeOff } from "lucide-react";
 
 export default function AuthModal({ isOpen, onClose, message }) {
   const [mode, setMode] = useState('login'); // 'login' | 'signup'
@@ -10,6 +11,7 @@ export default function AuthModal({ isOpen, onClose, message }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const { signIn, signUp } = useAuth();
 
@@ -93,17 +95,35 @@ export default function AuthModal({ isOpen, onClose, message }) {
             />
           </div>
 
-          <div className="auth-modal__field">
+          <div className="auth-modal__field" style={{ position: "relative" }}>
             <label htmlFor="auth-password">Password</label>
             <input
               id="auth-password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
               minLength={6}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "65%",
+                transform: "translateY(-50%)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
           <button
