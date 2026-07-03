@@ -13,7 +13,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
-const DOMAIN = "https://kaustubha-vastram.vercel.app"; // Update with your actual production domain
+const DOMAIN = "https://kaustubhavastram.in"; // Update with your actual production domain
 
 if (!supabaseUrl || !supabaseKey) {
   console.error("Missing Supabase URL or Key");
