@@ -76,6 +76,16 @@
   margin: 0.4rem 0 0.8rem;
 }
 
+.product-detail__code {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  margin-bottom: 0.8rem;
+  opacity: 0.8;
+}
+
 .product-detail__price {
   font-family: var(--font-serif);
   font-size: 1.6rem;

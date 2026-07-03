@@ -142,6 +142,11 @@ export default function ProductDetail() {
                 product.category.slice(1)}
             </p>
             <h1 className="product-detail__title">{product.name}</h1>
+            {product.product_code && (
+              <div className="product-detail__code">
+                Product ID: {product.product_code}
+              </div>
+            )}
             <div className="product-detail__price">
               ₹{parseFloat(product.price).toFixed(2)}
             </div>

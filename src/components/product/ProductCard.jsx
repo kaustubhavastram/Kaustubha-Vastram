@@ -61,6 +61,9 @@ export default function ProductCard({ product }) {
         </span>
         <span className="card__price">₹{product.price.toFixed(2)}</span>
       </div>
+      {product.product_code && (
+        <div className="card__product-code">ID: {product.product_code}</div>
+      )}
     </Link>
   );
 }

@@ -104,6 +104,7 @@ export default function Products() {
           <thead>
             <tr>
               <th>Image</th>
+              <th>Product ID</th>
               <th>Name</th>
               <th>Category</th>
               <th>Price</th>
@@ -126,6 +127,11 @@ export default function Products() {
                       e.target.src = '';
                     }}
                   />
+                </td>
+                <td>
+                  <span className="admin__product-code">
+                    {product.product_code || '—'}
+                  </span>
                 </td>
                 <td className="admin__product-name">{product.name}</td>
                 <td>

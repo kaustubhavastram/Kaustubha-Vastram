@@ -7,6 +7,7 @@ const CATEGORIES = ["all", "saree", "kurtha", "lehenga"];
 
 const emptyProduct = {
   name: "",
+  product_code: "",
   price: "",
   category: "saree",
   tag: "",
@@ -46,6 +47,7 @@ export default function ProductForm() {
       if (error) throw error;
       setForm({
         name: data.name || "",
+        product_code: data.product_code || "",
         price: data.price?.toString() || "",
         category: data.category || "saree",
         tag: data.tag || "",
@@ -162,8 +164,11 @@ export default function ProductForm() {
     const stockVal = form.stock_quantity.trim();
     const stockQuantity = stockVal === "" ? null : parseInt(stockVal, 10);
 
+    const productCode = form.product_code.trim() || null;
+
     const payload = {
       name: form.name.trim(),
+      product_code: productCode,
       price: parseFloat(form.price),
       category: form.category,
       tag: form.tag.trim() || null,
@@ -184,6 +189,25 @@ export default function ProductForm() {
       setError("Please upload at least one product image.");
       setSaving(false);
       return;
+    }
+
+    // Check product_code uniqueness
+    if (productCode) {
+      let query = supabase
+        .from("products")
+        .select("id")
+        .eq("product_code", productCode);
+
+      if (isEditing) {
+        query = query.neq("id", id);
+      }
+
+      const { data: existing } = await query;
+      if (existing && existing.length > 0) {
+        setError(`Product ID "${productCode}" is already in use. Please choose a unique ID.`);
+        setSaving(false);
+        return;
+      }
     }
 
     try {
@@ -269,6 +293,21 @@ export default function ProductForm() {
 
       <form className="admin__form" onSubmit={handleSubmit}>
         <div className="admin__form-grid">
+          <div className="admin__form-group">
+            <label htmlFor="product_code">Product ID</label>
+            <input
+              id="product_code"
+              name="product_code"
+              type="text"
+              value={form.product_code}
+              onChange={handleChange}
+              placeholder="e.g. KV-SAR-001"
+            />
+            <span className="admin__form-help">
+              Unique identifier for this product. Customers can search by this ID.
+            </span>
+          </div>
+
           <div className="admin__form-group">
             <label htmlFor="name">Product Name *</label>
             <input

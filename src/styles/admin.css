@@ -887,3 +887,15 @@
   word-break: break-word;
 }
 
+/* ---------- Product Code ---------- */
+.admin__product-code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--accent-dark);
+  background: rgba(176, 137, 104, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius);
+  white-space: nowrap;
+}
+
