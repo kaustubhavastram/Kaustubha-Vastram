@@ -7,8 +7,7 @@
     "dev": "concurrently \"vite\" \"node server.js\"",
     "dev:frontend": "vite",
     "dev:server": "node server.js",
-    "sitemap": "node scripts/generate-sitemap.js",
-    "build": "npm run sitemap && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "start": "node server.js"
   },
