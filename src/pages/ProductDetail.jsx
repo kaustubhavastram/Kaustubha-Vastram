@@ -163,6 +163,10 @@ export default function ProductDetail() {
               </div>
             )}
 
+            <div style={{ marginTop: "1rem", marginBottom: "1.5rem", padding: "1rem", backgroundColor: "#fff8e1", borderLeft: "4px solid #ffc107", borderRadius: "4px", fontSize: "0.85rem", color: "#5d4037", lineHeight: "1.5" }}>
+              <strong>⚠️ Return & Replacement:</strong> If you receive any damaged items and want a complete return or replacement, please contact us via WhatsApp from the <Link to="/contact" style={{ fontWeight: "600", textDecoration: "underline", color: "inherit" }}>Contacts page</Link>. The original sticker must remain attached to the product for returns.
+            </div>
+
             <button
               className="btn btn--dark btn--full product-detail__add"
               onClick={handleAdd}
