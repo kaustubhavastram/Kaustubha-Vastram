@@ -1,18 +1,23 @@
+import image1 from '../../logo/image1.jpeg';
+import image2 from '../../logo/image2.jpeg';
+import image3 from '../../logo/image3.jpeg';
+import image4 from '../../logo/image4.jpeg';
+
 const lookbookImages = [
   {
-    src: 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=700&q=80&auto=format&fit=crop',
+    src: image1,
     alt: 'Lookbook 1',
   },
   {
-    src: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=700&q=80&auto=format&fit=crop',
+    src: image2,
     alt: 'Lookbook 2',
   },
   {
-    src: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=700&q=80&auto=format&fit=crop',
+    src: image3,
     alt: 'Lookbook 3',
   },
   {
-    src: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=700&q=80&auto=format&fit=crop',
+    src: image4,
     alt: 'Lookbook 4',
   },
 ];

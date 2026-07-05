@@ -1,10 +1,12 @@
+import image5 from '../../logo/image5.jpeg';
+
 export default function Story() {
   return (
     <section className="section story" id="story">
       <div className="container story__inner">
         <div className="story__image reveal">
           <img
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=900&q=80&auto=format&fit=crop"
+            src={image5}
             alt="Atelier detail"
             onError={(e) => e.target.parentElement.classList.add('img-fallback')}
           />
