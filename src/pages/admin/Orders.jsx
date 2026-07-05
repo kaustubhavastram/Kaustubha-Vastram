@@ -66,7 +66,7 @@ export default function Orders() {
 
     const { data, error } = await supabase
       .from("order_items")
-      .select("*, products(name, image_url)")
+      .select("*, products(name, image_url, product_code)")
       .eq("order_id", orderId);
 
     if (!error) {
@@ -369,7 +369,10 @@ export default function Orders() {
                                     e.target.style.display = "none";
                                   }}
                                 />
-                                <span>{item.products?.name || "Unknown"}</span>
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                  <span>{item.products?.name || "Unknown"}</span>
+                                  <span className="admin__mono" style={{ fontSize: "0.8em", color: "#666" }}>ID: {item.products?.product_code}</span>
+                                </div>
                                 <span>×{item.quantity}</span>
                                 <span>
                                   ₹
