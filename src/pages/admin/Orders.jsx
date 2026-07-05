@@ -249,12 +249,26 @@ export default function Orders() {
                         <div className="admin__order-info">
                           <div className="admin__info-section">
                             <h4>Customer Information</h4>
-                            {orderProfiles[order.user_id] ? (
+                            {order.shipping_address ? (
                               <>
                                 <p>
                                   <strong>Name:</strong>{" "}
-                                  {orderProfiles[order.user_id]?.full_name ||
-                                    "N/A"}
+                                  {order.shipping_address.name || orderProfiles[order.user_id]?.full_name || "N/A"}
+                                </p>
+                                <p>
+                                  <strong>Email:</strong>{" "}
+                                  {order.shipping_address.email || orderProfiles[order.user_id]?.email || "N/A"}
+                                </p>
+                                <p>
+                                  <strong>Phone:</strong>{" "}
+                                  {order.shipping_address.phone || orderProfiles[order.user_id]?.phone || "N/A"}
+                                </p>
+                              </>
+                            ) : orderProfiles[order.user_id] ? (
+                              <>
+                                <p>
+                                  <strong>Name:</strong>{" "}
+                                  {orderProfiles[order.user_id]?.full_name || "N/A"}
                                 </p>
                                 <p>
                                   <strong>Email:</strong>{" "}
@@ -275,7 +289,9 @@ export default function Orders() {
                               {order.shipping_address ? (
                                 <>
                                   <p>
-                                    {order.shipping_address.address || "N/A"}
+                                    {order.shipping_address.address_line_1 || "N/A"}
+                                    {order.shipping_address.address_line_2 ? `, ${order.shipping_address.address_line_2}` : ""}
+                                    {order.shipping_address.landmark ? ` (Landmark: ${order.shipping_address.landmark})` : ""}
                                   </p>
                                   {order.shipping_address.city && (
                                     <p>
@@ -283,7 +299,7 @@ export default function Orders() {
                                       {order.shipping_address.state
                                         ? `, ${order.shipping_address.state}`
                                         : ""}{" "}
-                                      {order.shipping_address.postal_code || ""}
+                                      {order.shipping_address.pincode || ""}
                                     </p>
                                   )}
                                 </>
