@@ -113,7 +113,7 @@ export default function ProductDetail() {
               />
               {product.tag && effectivelyAvailable && <span className="card__tag">{product.tag}</span>}
               {!effectivelyAvailable && (
-                <span className="card__tag card__tag--unavailable">Unavailable</span>
+                <span className="card__tag card__tag--unavailable">Sold Out</span>
               )}
             </div>
 
@@ -172,7 +172,7 @@ export default function ProductDetail() {
               onClick={handleAdd}
               disabled={!effectivelyAvailable}
             >
-              {effectivelyAvailable ? "Add to Cart" : "Currently Unavailable"}
+              {effectivelyAvailable ? "Add to Cart" : "Sold Out"}
             </button>
           </div>
         </div>

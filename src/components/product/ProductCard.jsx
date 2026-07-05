@@ -41,7 +41,7 @@ export default function ProductCard({ product }) {
               </span>
             )}
             {!effectivelyAvailable && (
-              <span className="card__tag card__tag--unavailable">Unavailable</span>
+              <span className="card__tag card__tag--unavailable">Sold Out</span>
             )}
           </div>
         )}
@@ -52,7 +52,7 @@ export default function ProductCard({ product }) {
         disabled={!effectivelyAvailable}
         aria-label={`Add ${product.name} to cart`}
       >
-        {effectivelyAvailable ? "Add to Cart" : "Unavailable"}
+        {effectivelyAvailable ? "Add to Cart" : "Sold Out"}
       </button>
       <div className="card__name">{product.name}</div>
       <div className="card__meta">
