@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import { getCachedData, setCachedData } from "../lib/cache";
 import { useCart } from "../context/CartContext";
 import "../styles/product-detail.css";
 
@@ -23,29 +24,48 @@ export default function ProductDetail() {
     setLoading(true);
     setError("");
     try {
-      const { data, error: prodErr } = await supabase
-        .from("products")
-        .select("*")
-        .eq("id", id)
-        .single();
+      const cachedProd = getCachedData(`product_${id}`);
+      const cachedImgs = getCachedData(`product_images_${id}`);
 
-      if (prodErr) throw prodErr;
-      setProduct(data);
+      let prodData = cachedProd;
+      let imgsData = cachedImgs;
 
-      const { data: imgs, error: imgErr } = await supabase
-        .from("product_images")
-        .select("*")
-        .eq("product_id", id)
-        .order("sort_order", { ascending: true });
+      if (!prodData) {
+        const { data, error: prodErr } = await supabase
+          .from("products")
+          .select("*")
+          .eq("id", id)
+          .single();
 
-      if (!imgErr && imgs && imgs.length > 0) {
-        setImages(imgs);
-        const heroIdx = imgs.findIndex((img) => img.is_hero);
-        setActiveImage(heroIdx >= 0 ? heroIdx : 0);
-      } else if (data.image_url) {
-        setImages([{ image_url: data.image_url, is_hero: true }]);
-        setActiveImage(0);
+        if (prodErr) throw prodErr;
+        prodData = data;
+        setCachedData(`product_${id}`, data, 5);
       }
+      
+      setProduct(prodData);
+
+      if (!imgsData) {
+        const { data: imgs, error: imgErr } = await supabase
+          .from("product_images")
+          .select("*")
+          .eq("product_id", id)
+          .order("sort_order", { ascending: true });
+
+        if (!imgErr && imgs && imgs.length > 0) {
+          imgsData = imgs;
+          setCachedData(`product_images_${id}`, imgs, 5);
+        } else if (prodData.image_url) {
+          imgsData = [{ image_url: prodData.image_url, is_hero: true }];
+          setCachedData(`product_images_${id}`, imgsData, 5);
+        }
+      }
+
+      if (imgsData && imgsData.length > 0) {
+        setImages(imgsData);
+        const heroIdx = imgsData.findIndex((img) => img.is_hero);
+        setActiveImage(heroIdx >= 0 ? heroIdx : 0);
+      }
+
     } catch (err) {
       console.error("Error fetching product:", err);
       setError("Product not found.");

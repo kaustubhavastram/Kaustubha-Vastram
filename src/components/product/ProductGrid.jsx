@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabase";
+import { getCachedData, setCachedData } from "../../lib/cache";
 import ProductCard from "./ProductCard";
 import Filters from "./Filters";
 
@@ -16,6 +17,13 @@ export default function ProductGrid() {
   async function fetchProducts() {
     setLoading(true);
     try {
+      const cached = getCachedData('all_products');
+      if (cached) {
+        setProducts(cached);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("products")
         .select("*")
@@ -25,8 +33,10 @@ export default function ProductGrid() {
 
       if (data && data.length > 0) {
         setProducts(data);
+        setCachedData('all_products', data, 5);
       } else {
         setProducts([]);
+        setCachedData('all_products', [], 5);
       }
     } catch (err) {
       console.warn("Error fetching products:", err.message);

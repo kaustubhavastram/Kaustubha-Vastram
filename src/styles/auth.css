@@ -167,3 +167,46 @@
 .auth-modal__switch button:hover {
   color: var(--ink);
 }
+
+.auth-modal__divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+.auth-modal__divider::before,
+.auth-modal__divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(43, 37, 32, 0.1);
+}
+.auth-modal__divider:not(:empty)::before {
+  margin-right: .5em;
+}
+.auth-modal__divider:not(:empty)::after {
+  margin-left: .5em;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: white;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+  border-radius: var(--radius);
+  padding: 0.85rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+  width: 100%;
+}
+.btn-google:hover {
+  background: #f8f9fa;
+  border-color: #d2e3fc;
+}
