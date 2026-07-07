@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -21,6 +21,11 @@ export default function Checkout() {
   const { items, cartTotal, clearCart } = useCart();
   const { user, profile } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const buyNowItem = location.state?.buyNowItem;
+
+  const checkoutItems = buyNowItem ? [buyNowItem] : items;
+  const checkoutTotal = buyNowItem ? (buyNowItem.price * buyNowItem.qty) : cartTotal;
 
   // Steps: 'address' → 'payment'
   const [step, setStep] = useState('address');
@@ -57,8 +62,8 @@ export default function Checkout() {
     }
   }, [profile, user]);
 
-  const shipping = cartTotal >= 150 ? 0 : 12;
-  const finalTotal = cartTotal + shipping;
+  const shipping = checkoutTotal >= 150 ? 0 : 12;
+  const finalTotal = checkoutTotal + shipping;
 
   // Validate delivery form
   function validateDelivery() {
@@ -109,7 +114,7 @@ export default function Checkout() {
     }
   }
 
-  if (items.length === 0 && !orderSuccess) {
+  if (checkoutItems.length === 0 && !orderSuccess) {
     return (
       <div className="checkout-page">
         <div className="container checkout__empty">
@@ -180,7 +185,7 @@ export default function Checkout() {
       // 2. Create order items in Supabase
       // Filter out items with non-UUID IDs (from fallback/local data)
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-      const validItems = items.filter((item) => uuidRegex.test(item.id));
+      const validItems = checkoutItems.filter((item) => uuidRegex.test(item.id));
 
       if (validItems.length > 0) {
         const orderItems = validItems.map((item) => ({
@@ -223,7 +228,7 @@ export default function Checkout() {
             email: delivery.email.trim(),
             orderId: order.id,
             total: finalTotal,
-            items,
+            items: checkoutItems,
           });
 
           // Notify admin about the new order (fire-and-forget)
@@ -232,10 +237,12 @@ export default function Checkout() {
             email: delivery.email.trim(),
             orderId: order.id,
             total: finalTotal,
-            items,
+            items: checkoutItems,
           });
 
-          clearCart();
+          if (!buyNowItem) {
+            clearCart();
+          }
           setProcessing(false);
           setOrderSuccess(true);
         },
@@ -315,7 +322,7 @@ export default function Checkout() {
             <div className="checkout__summary">
               <h3>Order Summary</h3>
               <div className="checkout__items">
-                {items.map((item) => (
+                {checkoutItems.map((item) => (
                   <div key={item.id} className="checkout__item">
                     <img
                       src={item.image_url}
@@ -339,7 +346,7 @@ export default function Checkout() {
               <div className="checkout__totals">
                 <div className="checkout__row">
                   <span>Subtotal</span>
-                  <span>₹{cartTotal.toFixed(2)}</span>
+                  <span>₹{checkoutTotal.toFixed(2)}</span>
                 </div>
                 <div className="checkout__row">
                   <span>Shipping</span>

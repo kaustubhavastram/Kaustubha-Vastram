@@ -187,13 +187,28 @@ export default function ProductDetail() {
               <strong>⚠️ Return & Replacement:</strong> If you receive any damaged items and want a complete return or replacement, please contact us via WhatsApp from the <Link to="/contact" style={{ fontWeight: "600", textDecoration: "underline", color: "inherit" }}>Contacts page</Link>. The original sticker must remain attached to the product for returns.
             </div>
 
-            <button
-              className="btn btn--dark btn--full product-detail__add"
-              onClick={handleAdd}
-              disabled={!effectivelyAvailable}
-            >
-              {effectivelyAvailable ? "Add to Cart" : "Sold Out"}
-            </button>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button
+                className="btn btn--outline btn--full product-detail__add"
+                onClick={handleAdd}
+                disabled={!effectivelyAvailable}
+                style={{ flex: 1, padding: '1rem', border: '1px solid var(--ink)', background: 'transparent', color: 'var(--ink)' }}
+              >
+                {effectivelyAvailable ? "Add to Cart" : "Sold Out"}
+              </button>
+              <button
+                className="btn btn--dark btn--full product-detail__add"
+                onClick={() => {
+                  if (product && effectivelyAvailable) {
+                    navigate('/checkout', { state: { buyNowItem: { ...product, qty: 1 } } });
+                  }
+                }}
+                disabled={!effectivelyAvailable}
+                style={{ flex: 1 }}
+              >
+                Buy Now
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -1493,7 +1493,7 @@ img { display: block; max-width: 100%; }
 
   /* --- Cards: touch-friendly add-to-cart --- */
   .card__add {
-    position: relative;
+    position: static;
     left: auto; right: auto; bottom: auto;
     opacity: 1;
     transform: none;
