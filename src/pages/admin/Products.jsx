@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-
+import { clearCachePrefix } from '../../lib/cache';
 function StockBadge({ quantity }) {
   if (quantity === null || quantity === undefined) {
     return <span className="stock-badge stock-badge--unlimited">∞</span>;
@@ -54,6 +54,7 @@ export default function Products() {
           p.id === id ? { ...p, available: !currentValue } : p
         )
       );
+      clearCachePrefix('all_products');
     }
   }
 
@@ -63,6 +64,7 @@ export default function Products() {
     if (!error) {
       setProducts((prev) => prev.filter((p) => p.id !== id));
       setDeleteId(null);
+      clearCachePrefix('all_products');
     } else {
       console.error('Error deleting product:', error);
       if (error.code === '23503') {
@@ -139,7 +141,24 @@ export default function Products() {
                     {product.category}
                   </span>
                 </td>
-                <td>₹{parseFloat(product.price).toFixed(2)}</td>
+                <td>
+                  {product.discount_price != null && parseFloat(product.discount_price) < parseFloat(product.price) ? (
+                    <>
+                      <span style={{ textDecoration: 'line-through', color: '#999', marginRight: '0.4rem', fontSize: '0.85em' }}>
+                        ₹{parseFloat(product.price).toFixed(2)}
+                      </span>
+                      <span style={{ color: '#2e7d32', fontWeight: 600 }}>
+                        ₹{parseFloat(product.discount_price).toFixed(2)}
+                      </span>
+                      <br />
+                      <span style={{ color: '#2e7d32', fontSize: '0.75em', fontWeight: 600 }}>
+                        {Math.round(((parseFloat(product.price) - parseFloat(product.discount_price)) / parseFloat(product.price)) * 100)}% OFF
+                      </span>
+                    </>
+                  ) : (
+                    <>₹{parseFloat(product.price).toFixed(2)}</>
+                  )}
+                </td>
                 <td>
                   <StockBadge quantity={product.stock_quantity} />
                 </td>

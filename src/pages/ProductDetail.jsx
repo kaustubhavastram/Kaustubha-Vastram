@@ -84,8 +84,22 @@ export default function ProductDetail() {
     product?.stock_quantity > 0 &&
     product?.stock_quantity <= 4;
 
+  const hasDiscount =
+    product?.discount_price != null &&
+    parseFloat(product?.discount_price) < parseFloat(product?.price);
+  const discountPercent = hasDiscount
+    ? Math.round(
+        ((parseFloat(product.price) - parseFloat(product.discount_price)) /
+          parseFloat(product.price)) *
+          100
+      )
+    : 0;
+  const effectivePrice = hasDiscount
+    ? parseFloat(product?.discount_price)
+    : parseFloat(product?.price);
+
   function handleAdd() {
-    if (product && effectivelyAvailable) addItem(product);
+    if (product && effectivelyAvailable) addItem({ ...product, price: effectivePrice });
   }
 
   if (loading) {
@@ -168,7 +182,21 @@ export default function ProductDetail() {
               </div>
             )}
             <div className="product-detail__price">
-              ₹{parseFloat(product.price).toFixed(2)}
+              {hasDiscount ? (
+                <>
+                  <span className="product-detail__price--original">
+                    ₹{parseFloat(product.price).toFixed(2)}
+                  </span>
+                  <span className="product-detail__price--discount">
+                    ₹{parseFloat(product.discount_price).toFixed(2)}
+                  </span>
+                  <span className="product-detail__discount-badge">
+                    {discountPercent}% OFF
+                  </span>
+                </>
+              ) : (
+                <>₹{parseFloat(product.price).toFixed(2)}</>
+              )}
             </div>
 
             {product.description && (
@@ -200,7 +228,7 @@ export default function ProductDetail() {
                 className="btn btn--dark btn--full product-detail__add"
                 onClick={() => {
                   if (product && effectivelyAvailable) {
-                    navigate('/checkout', { state: { buyNowItem: { ...product, qty: 1 } } });
+                    navigate('/checkout', { state: { buyNowItem: { ...product, price: effectivePrice, qty: 1 } } });
                   }
                 }}
                 disabled={!effectivelyAvailable}

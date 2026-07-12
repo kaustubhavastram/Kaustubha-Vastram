@@ -91,6 +91,35 @@
   font-size: 1.6rem;
   color: var(--accent-dark);
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.product-detail__price--original {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.product-detail__price--discount {
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
+.product-detail__discount-badge {
+  display: inline-block;
+  background: #2e7d32;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  font-family: var(--font-body);
 }
 
 .product-detail__description {

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { sendNewProductEmail } from "../../lib/emailService";
+import { clearCachePrefix } from "../../lib/cache";
 
 const CATEGORIES = ["all", "saree", "kurtha", "lehenga"];
 
@@ -9,6 +10,7 @@ const emptyProduct = {
   name: "",
   product_code: "",
   price: "",
+  discount_price: "",
   category: "saree",
   tag: "",
   alt: "",
@@ -49,6 +51,7 @@ export default function ProductForm() {
         name: data.name || "",
         product_code: data.product_code || "",
         price: data.price?.toString() || "",
+        discount_price: data.discount_price != null ? data.discount_price.toString() : "",
         category: data.category || "saree",
         tag: data.tag || "",
         alt: data.alt || "",
@@ -182,10 +185,14 @@ export default function ProductForm() {
 
     const productCode = form.product_code.trim() || null;
 
+    const discountVal = form.discount_price.trim();
+    const discountPrice = discountVal === "" ? null : parseFloat(discountVal);
+
     const payload = {
       name: form.name.trim(),
       product_code: productCode,
       price: parseFloat(form.price),
+      discount_price: discountPrice,
       category: form.category,
       tag: form.tag.trim() || null,
       image_url: heroImage ? heroImage.image_url : "",
@@ -273,6 +280,7 @@ export default function ProductForm() {
         });
       }
 
+      clearCachePrefix('all_products');
       navigate("/admin/products");
     } catch (err) {
       setError(err.message || "Failed to save product.");
@@ -350,6 +358,33 @@ export default function ProductForm() {
               placeholder="245.00"
               required
             />
+          </div>
+
+          <div className="admin__form-group">
+            <label htmlFor="discount_price">Discount Price (₹)</label>
+            <input
+              id="discount_price"
+              name="discount_price"
+              type="number"
+              step="0.01"
+              min="0"
+              value={form.discount_price}
+              onChange={handleChange}
+              placeholder="e.g. 199.00"
+            />
+            {form.price && form.discount_price && parseFloat(form.discount_price) < parseFloat(form.price) && (
+              <span className="admin__form-help" style={{ color: '#2e7d32', fontWeight: 600 }}>
+                {Math.round(((parseFloat(form.price) - parseFloat(form.discount_price)) / parseFloat(form.price)) * 100)}% OFF
+              </span>
+            )}
+            {form.price && form.discount_price && parseFloat(form.discount_price) >= parseFloat(form.price) && (
+              <span className="admin__form-help" style={{ color: '#c62828' }}>
+                Discount price must be less than the original price
+              </span>
+            )}
+            <span className="admin__form-help">
+              Leave blank for no discount
+            </span>
           </div>
 
           <div className="admin__form-group">
