@@ -5,6 +5,8 @@ import Razorpay from "razorpay";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import sendEmailHandler from "./api/send-email.js";
 
 const app = express();
@@ -119,6 +121,40 @@ app.post("/api/verify-payment", (req, res) => {
       error: "Internal server error during verification",
       verified: false,
     });
+  }
+});
+
+// ── Cloudflare R2 / AWS S3 ─────────────────────────────────────────
+const s3Client = new S3Client({
+  region: "auto",
+  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || "",
+  },
+});
+
+app.post("/api/get-upload-url", async (req, res) => {
+  try {
+    const { fileName, fileType } = req.body;
+    if (!fileName || !fileType) {
+      return res.status(400).json({ error: "Missing fileName or fileType" });
+    }
+
+    const uniqueFileName = `${Date.now()}-${fileName}`;
+    const command = new PutObjectCommand({
+      Bucket: process.env.R2_BUCKET_NAME,
+      Key: uniqueFileName,
+      ContentType: fileType,
+    });
+
+    const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+    const publicUrl = `${process.env.R2_PUBLIC_URL_PREFIX}/${uniqueFileName}`;
+
+    res.json({ uploadUrl, publicUrl });
+  } catch (err) {
+    console.error("❌ Generate upload URL error:", err);
+    res.status(500).json({ error: "Failed to generate upload URL" });
   }
 });
 

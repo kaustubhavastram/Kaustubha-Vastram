@@ -102,22 +102,38 @@ export default function ProductForm() {
     try {
       const uploaded = [];
       for (const file of files) {
-        const ext = file.name.split(".").pop();
-        const fileName = `${crypto.randomUUID()}.${ext}`;
-        const path = `${fileName}`;
+        // 1. Get presigned URL from our backend
+        const res = await fetch("/api/get-upload-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fileName: file.name,
+            fileType: file.type || "application/octet-stream",
+          }),
+        });
+        
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.error || "Failed to get upload URL");
+        }
+        
+        const { uploadUrl, publicUrl } = await res.json();
 
-        const { error: uploadErr } = await supabase.storage
-          .from("product-images")
-          .upload(path, file, { cacheControl: "3600", upsert: false });
+        // 2. Upload directly to Cloudflare R2
+        const uploadRes = await fetch(uploadUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type || "application/octet-stream",
+          },
+          body: file,
+        });
 
-        if (uploadErr) throw uploadErr;
-
-        const { data: publicData } = supabase.storage
-          .from("product-images")
-          .getPublicUrl(path);
+        if (!uploadRes.ok) {
+          throw new Error("Failed to upload image to R2");
+        }
 
         uploaded.push({
-          image_url: publicData.publicUrl,
+          image_url: publicUrl,
           is_hero: false,
         });
       }
