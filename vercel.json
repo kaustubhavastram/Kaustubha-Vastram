@@ -4,7 +4,6 @@
     { "source": "/api/create-order", "destination": "/api/create-order" },
     { "source": "/api/verify-payment", "destination": "/api/verify-payment" },
     { "source": "/api/send-email", "destination": "/api/send-email" },
-    { "source": "/api/get-upload-url", "destination": "/api/get-upload-url" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
