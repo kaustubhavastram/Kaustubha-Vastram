@@ -54,11 +54,11 @@ export default function ProductCard({ product }) {
             {product.tag && effectivelyAvailable && (
               <span className="card__tag">{product.tag}</span>
             )}
-            {isLowStock && effectivelyAvailable && (
+            {/* {isLowStock && effectivelyAvailable && (
               <span className="card__tag card__tag--low-stock">
                 Only {product.stock_quantity} left!
               </span>
-            )}
+            )} */}
             {!effectivelyAvailable && (
               <span className="card__tag card__tag--unavailable">Sold Out</span>
             )}

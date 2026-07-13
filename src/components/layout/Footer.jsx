@@ -29,9 +29,9 @@ export default function Footer() {
         </div>
         <div className="footer__col">
           <h4>Follow</h4>
-          <a href="#">Instagram</a>
+          <a href="https://www.instagram.com/kaustubha_vastram/" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="#">Pinterest</a>
-          <a href="#">Facebook</a>
+          <a href="https://www.facebook.com/p/Kaustubha-Vastram-61591106364491/" target="_blank" rel="noopener noreferrer">Facebook</a>
         </div>
       </div>
       <div className="footer__bottom">

@@ -288,9 +288,10 @@ CREATE TABLE IF NOT EXISTS public.product_images (
 ALTER TABLE public.product_images ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Admins can read product images" ON public.product_images;
-CREATE POLICY "Admins can read product images"
+DROP POLICY IF EXISTS "Anyone can read product images" ON public.product_images;
+CREATE POLICY "Anyone can read product images"
   ON public.product_images FOR SELECT
-  USING (public.is_admin());
+  USING (true);
 
 DROP POLICY IF EXISTS "Admins can insert product images" ON public.product_images;
 CREATE POLICY "Admins can insert product images"
