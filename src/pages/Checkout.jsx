@@ -62,7 +62,7 @@ export default function Checkout() {
     }
   }, [profile, user]);
 
-  const shipping = checkoutTotal >= 150 ? 0 : 12;
+  const shipping = 50;
   const finalTotal = checkoutTotal + shipping;
 
   // Validate delivery form
