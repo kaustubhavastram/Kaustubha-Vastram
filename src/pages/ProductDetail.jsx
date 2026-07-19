@@ -213,6 +213,9 @@ export default function ProductDetail() {
 
             <div style={{ marginTop: "1rem", marginBottom: "1.5rem", padding: "1rem", backgroundColor: "#fff8e1", borderLeft: "4px solid #ffc107", borderRadius: "4px", fontSize: "0.85rem", color: "#5d4037", lineHeight: "1.5" }}>
               <strong>⚠️ Return & Replacement:</strong> If you receive any damaged items and want a complete return or replacement, please contact us via WhatsApp from the <Link to="/contact" style={{ fontWeight: "600", textDecoration: "underline", color: "inherit" }}>Contacts page</Link>. The original sticker must remain attached to the product for returns.
+              <br />
+              <br />
+              <strong>Note: A delivery charge of ₹50 is applicable on every order.</strong>
             </div>
 
             <div style={{ display: 'flex', gap: '1rem' }}>
