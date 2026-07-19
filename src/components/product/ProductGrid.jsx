@@ -17,7 +17,7 @@ export default function ProductGrid() {
   async function fetchProducts() {
     setLoading(true);
     try {
-      const cached = getCachedData('all_products');
+      const cached = getCachedData('all_products_desc');
       if (cached) {
         setProducts(cached);
         setLoading(false);
@@ -27,16 +27,16 @@ export default function ProductGrid() {
       const { data, error } = await supabase
         .from("products")
         .select("*")
-        .order("created_at", { ascending: true });
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
 
       if (data && data.length > 0) {
         setProducts(data);
-        setCachedData('all_products', data, 5);
+        setCachedData('all_products_desc', data, 5);
       } else {
         setProducts([]);
-        setCachedData('all_products', [], 5);
+        setCachedData('all_products_desc', [], 5);
       }
     } catch (err) {
       console.warn("Error fetching products:", err.message);
