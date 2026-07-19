@@ -111,6 +111,7 @@ export default function Products() {
               <th>Category</th>
               <th>Price</th>
               <th>Stock</th>
+              <th>Priority</th>
               <th>Tag</th>
               <th>Available</th>
               <th>Actions</th>
@@ -161,6 +162,31 @@ export default function Products() {
                 </td>
                 <td>
                   <StockBadge quantity={product.stock_quantity} />
+                </td>
+                <td>
+                  <span
+                    className="admin__category-badge"
+                    style={{
+                      background:
+                        product.display_priority === 'premium'
+                          ? '#fff3cd'
+                          : product.display_priority === 'best'
+                            ? '#d1ecf1'
+                            : '#e9ecef',
+                      color:
+                        product.display_priority === 'premium'
+                          ? '#856404'
+                          : product.display_priority === 'best'
+                            ? '#0c5460'
+                            : '#495057',
+                    }}
+                  >
+                    {product.display_priority === 'premium'
+                      ? 'Premium'
+                      : product.display_priority === 'best'
+                        ? 'Best'
+                        : 'Good'}
+                  </span>
                 </td>
                 <td>{product.tag || '—'}</td>
                 <td>

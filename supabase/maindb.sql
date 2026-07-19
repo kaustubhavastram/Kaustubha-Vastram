@@ -398,3 +398,11 @@ ALTER TABLE public.product_images
   RENAME COLUMN display_order TO sort_order;
 
 ALTER TABLE public.products ADD COLUMN IF NOT EXISTS discount_price NUMERIC(10,2);
+
+
+-- ============================================================
+-- 009_add_display_priority.sql
+-- ============================================================
+ALTER TABLE public.products
+  ADD COLUMN IF NOT EXISTS display_priority TEXT NOT NULL DEFAULT 'good'
+  CHECK (display_priority IN ('premium', 'best', 'good'));

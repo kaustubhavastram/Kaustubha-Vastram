@@ -46,21 +46,29 @@ export default function ProductGrid() {
     }
   }
 
+  const PRIORITY_ORDER = { premium: 0, best: 1, good: 2 };
+
   const trimmedQuery = searchQuery.trim().toLowerCase();
 
-  const filtered = products.filter((p) => {
-    // Category filter
-    const matchesCategory =
-      activeFilter === "all" || p.category === activeFilter;
+  const filtered = products
+    .filter((p) => {
+      // Category filter
+      const matchesCategory =
+        activeFilter === "all" || p.category === activeFilter;
 
-    // Search filter (by name or product_code)
-    const matchesSearch =
-      trimmedQuery === "" ||
-      p.name.toLowerCase().includes(trimmedQuery) ||
-      (p.product_code && p.product_code.toLowerCase().includes(trimmedQuery));
+      // Search filter (by name or product_code)
+      const matchesSearch =
+        trimmedQuery === "" ||
+        p.name.toLowerCase().includes(trimmedQuery) ||
+        (p.product_code && p.product_code.toLowerCase().includes(trimmedQuery));
 
-    return matchesCategory && matchesSearch;
-  });
+      return matchesCategory && matchesSearch;
+    })
+    .sort((a, b) => {
+      const pa = PRIORITY_ORDER[a.display_priority] ?? 2;
+      const pb = PRIORITY_ORDER[b.display_priority] ?? 2;
+      return pa - pb;
+    });
 
   function handleSearchClear() {
     setSearchQuery("");
