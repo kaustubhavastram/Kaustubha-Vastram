@@ -6,6 +6,12 @@ import { clearCachePrefix } from "../../lib/cache";
 
 const CATEGORIES = ["all", "saree", "kurtha", "lehenga"];
 
+const DISPLAY_PRIORITIES = [
+  { value: "premium", label: "Premium", desc: "Displayed on top" },
+  { value: "best", label: "Best", desc: "Displayed after Premium" },
+  { value: "good", label: "Good", desc: "Displayed after Premium & Best" },
+];
+
 const emptyProduct = {
   name: "",
   product_code: "",
@@ -17,6 +23,7 @@ const emptyProduct = {
   available: true,
   description: "",
   stock_quantity: "",
+  display_priority: "good",
 };
 
 export default function ProductForm() {
@@ -58,6 +65,7 @@ export default function ProductForm() {
         available: data.available ?? true,
         description: data.description || "",
         stock_quantity: data.stock_quantity != null ? data.stock_quantity.toString() : "",
+        display_priority: data.display_priority || "good",
       });
 
       const { data: imgs, error: imgErr } = await supabase
@@ -200,6 +208,7 @@ export default function ProductForm() {
       available: form.available,
       description: form.description.trim(),
       stock_quantity: stockQuantity,
+      display_priority: form.display_priority,
     };
 
     if (!payload.name || isNaN(payload.price) || payload.price <= 0) {
@@ -430,6 +439,25 @@ export default function ProductForm() {
               onChange={handleChange}
               placeholder="e.g. New, Best seller, Limited"
             />
+          </div>
+
+          <div className="admin__form-group">
+            <label htmlFor="display_priority">Display Priority *</label>
+            <select
+              id="display_priority"
+              name="display_priority"
+              value={form.display_priority}
+              onChange={handleChange}
+            >
+              {DISPLAY_PRIORITIES.map((p) => (
+                <option key={p.value} value={p.value}>
+                  {p.label} — {p.desc}
+                </option>
+              ))}
+            </select>
+            <span className="admin__form-help">
+              Controls where this product appears in the store — Premium products show first, then Best, then Good.
+            </span>
           </div>
 
           <div className="admin__form-group admin__form-group--full">
