@@ -1,4 +1,4 @@
-const CATEGORIES = ["all", "saree", "kurtha", "lehenga"];
+const CATEGORIES = ["all", "georgette", "fancy saree", "soft cotton"];
 
 export default function Filters({ activeFilter, onFilterChange }) {
   return (

@@ -2,58 +2,51 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const SIZE_DATA = {
-  saree: {
-    label: "Saree",
+  georgette: {
+    label: "Georgette",
     icon: "👘",
     intro:
-      "Our sarees come in a standard length and width. The blouse piece included is unstitched — please refer to the measurements below for tailoring.",
+      "Our georgette sarees come in a standard length and width. The blouse piece included is unstitched — please refer to the measurements below for tailoring.",
     headers: ["Component", "Length", "Width"],
     rows: [
       ["Saree (Standard)", "5.5 meters", "1.15 meters"],
       ["Saree (with Border)", "5.5 meters", "1.2 meters"],
       ["Blouse Piece (Unstitched)", "0.8 meters", "1.0 meter"],
     ],
-    note: "All sarees include an unstitched blouse piece. Please consult your tailor for custom blouse fitting.",
+    note: "All georgette sarees include an unstitched blouse piece. Please consult your tailor for custom blouse fitting.",
   },
-  kurtha: {
-    label: "Kurtha",
-    icon: "👗",
+  "fancy saree": {
+    label: "Fancy Saree",
+    icon: "✨",
     intro:
-      "Find your perfect kurtha fit below. Measure yourself with a soft tape over light clothing for the most accurate results.",
-    headers: ["Size", "Bust (in)", "Waist (in)", "Hip (in)", "Length (in)", "Shoulder (in)"],
+      "Our fancy sarees come in a standard length and width. The blouse piece included is unstitched — please refer to the measurements below for tailoring.",
+    headers: ["Component", "Length", "Width"],
     rows: [
-      ["XS", "32", "26", "34", "36", "13.5"],
-      ["S", "34", "28", "36", "37", "14"],
-      ["M", "36", "30", "38", "38", "14.5"],
-      ["L", "38", "32", "40", "39", "15"],
-      ["XL", "40", "34", "42", "40", "15.5"],
-      ["XXL", "42", "36", "44", "41", "16"],
-      ["3XL", "44", "38", "46", "42", "16.5"],
+      ["Saree (Standard)", "5.5 meters", "1.15 meters"],
+      ["Saree (with Border)", "5.5 meters", "1.2 meters"],
+      ["Blouse Piece (Unstitched)", "0.8 meters", "1.0 meter"],
     ],
-    note: "Kurtha measurements are approximate and may vary slightly by design. Dupatta, if included, is of standard size (2.25m × 1m).",
+    note: "All fancy sarees include an unstitched blouse piece. Please consult your tailor for custom blouse fitting.",
   },
-  lehenga: {
-    label: "Lehenga",
-    icon: "💃",
+  "soft cotton": {
+    label: "Soft Cotton",
+    icon: "🌿",
     intro:
-      "Our lehengas are designed with a semi-stitched or ready-to-wear approach. Refer to the chart below for the lehenga skirt, blouse, and dupatta measurements.",
-    headers: ["Size", "Skirt Waist (in)", "Skirt Length (in)", "Blouse Bust (in)", "Blouse Length (in)"],
+      "Our soft cotton sarees come in a standard length and width. The blouse piece included is unstitched — please refer to the measurements below for tailoring.",
+    headers: ["Component", "Length", "Width"],
     rows: [
-      ["S", "28", "40", "34", "14"],
-      ["M", "30", "40", "36", "14.5"],
-      ["L", "32", "41", "38", "15"],
-      ["XL", "34", "41", "40", "15.5"],
-      ["XXL", "36", "42", "42", "16"],
-      ["3XL", "38", "42", "44", "16.5"],
+      ["Saree (Standard)", "5.5 meters", "1.15 meters"],
+      ["Saree (with Border)", "5.5 meters", "1.2 meters"],
+      ["Blouse Piece (Unstitched)", "0.8 meters", "1.0 meter"],
     ],
-    note: "Lehenga skirt has a drawstring/elastic waist with 2″ adjustment range. Dupatta included is 2.5m × 1m.",
+    note: "All soft cotton sarees include an unstitched blouse piece. Please consult your tailor for custom blouse fitting.",
   },
 };
 
 const CATEGORIES = Object.keys(SIZE_DATA);
 
 export default function SizeGuide() {
-  const [active, setActive] = useState("saree");
+  const [active, setActive] = useState("georgette");
 
   useEffect(() => {
     window.scrollTo(0, 0);

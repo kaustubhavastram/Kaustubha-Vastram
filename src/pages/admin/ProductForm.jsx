@@ -4,7 +4,7 @@ import { supabase } from "../../lib/supabase";
 import { sendNewProductEmail } from "../../lib/emailService";
 import { clearCachePrefix } from "../../lib/cache";
 
-const CATEGORIES = ["all", "saree", "kurtha", "lehenga"];
+const CATEGORIES = ["all", "georgette", "fancy saree", "soft cotton"];
 
 const DISPLAY_PRIORITIES = [
   { value: "premium", label: "Premium", desc: "Displayed on top" },
@@ -17,7 +17,7 @@ const emptyProduct = {
   product_code: "",
   price: "",
   discount_price: "",
-  category: "saree",
+  category: "georgette",
   tag: "",
   alt: "",
   available: true,
@@ -59,7 +59,7 @@ export default function ProductForm() {
         product_code: data.product_code || "",
         price: data.price?.toString() || "",
         discount_price: data.discount_price != null ? data.discount_price.toString() : "",
-        category: data.category || "saree",
+        category: data.category || "georgette",
         tag: data.tag || "",
         alt: data.alt || "",
         available: data.available ?? true,

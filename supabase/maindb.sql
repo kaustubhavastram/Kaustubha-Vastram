@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS public.products (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   price NUMERIC(10, 2) NOT NULL,
-  category TEXT NOT NULL CHECK (category IN ('saree', 'kurtha', 'lehenga')),
+  category TEXT NOT NULL CHECK (category IN ('georgette', 'fancy saree', 'soft cotton')),
   tag TEXT,
   image_url TEXT,
   alt TEXT,
@@ -172,14 +172,14 @@ CREATE POLICY "Users can insert own order items"
 
 -- 5. Seed products
 INSERT INTO public.products (name, price, category, tag, image_url, alt) VALUES
-  ('Arlet', 245.00, 'midi', 'Best seller', 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&q=85&auto=format&fit=crop', 'Arlet midi dress'),
-  ('Clémence', 310.00, 'maxi', 'New', 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&q=85&auto=format&fit=crop', 'Clémence maxi dress'),
-  ('Elowen', 195.00, 'mini', NULL, 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600&q=85&auto=format&fit=crop', 'Elowen mini dress'),
-  ('Marguerite', 420.00, 'evening', 'Limited', 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&q=85&auto=format&fit=crop', 'Marguerite evening gown'),
-  ('Sereia', 268.00, 'midi', NULL, 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=85&auto=format&fit=crop', 'Sereia midi dress'),
-  ('Lucia', 335.00, 'maxi', 'New', 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=85&auto=format&fit=crop', 'Lucia maxi dress'),
-  ('Estelle', 180.00, 'mini', NULL, 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=85&auto=format&fit=crop', 'Estelle mini dress'),
-  ('Roselyn', 480.00, 'evening', 'Limited', 'https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?w=600&q=85&auto=format&fit=crop', 'Roselyn evening gown');
+  ('Arlet', 245.00, 'georgette', 'Best seller', 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&q=85&auto=format&fit=crop', 'Arlet dress'),
+  ('Clémence', 310.00, 'fancy saree', 'New', 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&q=85&auto=format&fit=crop', 'Clémence dress'),
+  ('Elowen', 195.00, 'soft cotton', NULL, 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600&q=85&auto=format&fit=crop', 'Elowen dress'),
+  ('Marguerite', 420.00, 'georgette', 'Limited', 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&q=85&auto=format&fit=crop', 'Marguerite gown'),
+  ('Sereia', 268.00, 'fancy saree', NULL, 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=85&auto=format&fit=crop', 'Sereia dress'),
+  ('Lucia', 335.00, 'soft cotton', 'New', 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=85&auto=format&fit=crop', 'Lucia dress'),
+  ('Estelle', 180.00, 'georgette', NULL, 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=85&auto=format&fit=crop', 'Estelle dress'),
+  ('Roselyn', 480.00, 'fancy saree', 'Limited', 'https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?w=600&q=85&auto=format&fit=crop', 'Roselyn gown');
 
 -- 6. Updated_at trigger
 CREATE OR REPLACE FUNCTION public.update_updated_at()
