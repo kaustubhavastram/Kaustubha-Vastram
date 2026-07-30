@@ -415,3 +415,8 @@ UPDATE public.products SET category = 'fancy saree' WHERE category = 'lehenga';
 
 ALTER TABLE public.products ADD CONSTRAINT products_category_check 
   CHECK (category IN ('georgette', 'fancy saree', 'soft cotton'));
+
+  ALTER TABLE public.products DROP CONSTRAINT IF EXISTS products_category_check;
+
+  ALTER TABLE public.products ADD CONSTRAINT products_category_check 
+  CHECK (category IN ('georgette', 'fancy saree', 'soft cotton', 'crape silk', 'silk'));

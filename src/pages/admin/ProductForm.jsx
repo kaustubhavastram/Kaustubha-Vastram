@@ -4,7 +4,7 @@ import { supabase } from "../../lib/supabase";
 import { sendNewProductEmail } from "../../lib/emailService";
 import { clearCachePrefix } from "../../lib/cache";
 
-const CATEGORIES = ["all", "georgette", "fancy saree", "soft cotton"];
+const CATEGORIES = ["all", "georgette", "fancy saree", "soft cotton","crape silk","silk"];
 
 const DISPLAY_PRIORITIES = [
   { value: "premium", label: "Premium", desc: "Displayed on top" },
