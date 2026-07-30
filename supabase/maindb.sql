@@ -406,3 +406,12 @@ ALTER TABLE public.products ADD COLUMN IF NOT EXISTS discount_price NUMERIC(10,2
 ALTER TABLE public.products
   ADD COLUMN IF NOT EXISTS display_priority TEXT NOT NULL DEFAULT 'good'
   CHECK (display_priority IN ('premium', 'best', 'good'));
+
+  ALTER TABLE public.products DROP CONSTRAINT products_category_check;
+
+UPDATE public.products SET category = 'georgette' WHERE category = 'saree';
+UPDATE public.products SET category = 'soft cotton' WHERE category = 'kurtha';
+UPDATE public.products SET category = 'fancy saree' WHERE category = 'lehenga';
+
+ALTER TABLE public.products ADD CONSTRAINT products_category_check 
+  CHECK (category IN ('georgette', 'fancy saree', 'soft cotton'));
