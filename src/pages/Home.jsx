@@ -37,9 +37,9 @@ export default function Home() {
       <Hero />
       <Marquee />
 
-      <div className="promo-banner">
+      {/* <div className="promo-banner">
         <img src={discountImg} alt="Special Discount Offer" />
-      </div>
+      </div> */}
 
       <ProductGrid />
       <Story />
