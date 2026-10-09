@@ -6,7 +6,8 @@ import ProductGrid from '../components/product/ProductGrid';
 import Story from '../components/layout/Story';
 import Lookbook from '../components/layout/Lookbook';
 import Newsletter from '../components/layout/Newsletter';
-import discountImg from '../logo/promotion.jpeg';
+import discountImg from '../logo/navratri.jpeg';
+import '../styles/promo-modal.css';
 
 export default function Home() {
   // Scroll reveal observer
@@ -37,9 +38,9 @@ export default function Home() {
       <Hero />
       <Marquee />
 
-      {/* <div className="promo-banner">
+      <div className="promo-banner">
         <img src={discountImg} alt="Special Discount Offer" />
-      </div> */}
+      </div>
 
       <ProductGrid />
       <Story />
